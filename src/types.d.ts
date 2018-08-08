@@ -2,14 +2,24 @@
 
 // memory extension samples
 interface CreepMemory {
-  role: string;
+  type: string;
   room: string;
+  roleMem: any;
   working: boolean;
 }
 
+interface CreepSpawnObj {
+  type: string;
+  room: string;
+  roleMem: any;
+}
+
 interface Memory {
-  uuid: number;
-  log: any;
+  harvesters: any;
+  generic: any;
+  sources: Array<string>;
+  spawnList: Array<CreepSpawnObj>;
+  rooms: Array<string>;
 }
 
 // `global` extension samples
