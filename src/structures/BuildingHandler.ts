@@ -1,5 +1,6 @@
 import { Extensions } from "./Extensions";
 import { Roads } from "./roads";
+import { Controller } from "./controller";
 
 export class BuildingHandler {
   public static run() {
@@ -8,6 +9,7 @@ export class BuildingHandler {
       Roads.run();
     }
     Roads.build();
+    Controller.vis();
 
     for (const id in Game.structures) {
       const struct = Game.structures[id];

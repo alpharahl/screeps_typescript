@@ -32,12 +32,16 @@ export class CreepUtils {
   }
 
   public static fillSpawn(creep: Creep) {
-    var spawns = creep.room.find(FIND_MY_SPAWNS);
+    var spawns = creep.room.find(FIND_MY_STRUCTURES, {
+      filter: i =>
+        (i.structureType == STRUCTURE_EXTENSION || i.structureType == STRUCTURE_SPAWN) && i.energy < i.energyCapacity
+    });
     if (!spawns || spawns.length == 0) {
       return false;
     }
+
     for (var spawnId in spawns) {
-      var spawn = spawns[spawnId];
+      var spawn = <StructureExtension>spawns[spawnId];
       if (spawn.energy < spawn.energyCapacity) {
         if (creep.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
           creep.moveTo(spawn);

@@ -29,6 +29,7 @@ interface RoomMemory {
   upgraders: Array<string>;
   builders: Array<string>;
   roads: Array<RoomPosition>;
+  controllerHistory: Array<number>;
 }
 
 // `global` extension samples

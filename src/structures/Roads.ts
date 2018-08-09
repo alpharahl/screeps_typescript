@@ -45,7 +45,6 @@ export class Roads {
   private static findPath(source: RoomPosition, to: RoomPosition, room: Room) {
     let path = room.findPath(source, to, {
       ignoreCreeps: true,
-      ignoreRoads: true,
       swampCost: 1
     });
 
@@ -64,7 +63,13 @@ export class Roads {
         } else {
           room.memory.roads.push(rPos);
         }
+        if (!rPos || !pos.direction) {
+          continue;
+        }
         var neighbor = PositionUtils.getNeighbor(rPos, pos.direction + 1);
+        if (!neighbor) {
+          continue;
+        }
         if (neighbor.lookFor("terrain")[0] == "swamp") {
           room.memory.roads.unshift(neighbor);
         } else if (neighbor.lookFor("terrain")[0] != "wall") {
