@@ -1,11 +1,11 @@
-import { Harvester } from "./Harvester";
-import { Generic } from "./Generic";
+import { Harvester } from "./harvester";
+import { SpawnHauler } from "./SpawnHauler";
+import { Builder } from "./Builder";
+import { Upgrader } from "./Upgrader";
 
 export class CreepHandler {
   public static run() {
     // spawn creeps
-    Harvester.spawn();
-    Generic.spawn();
 
     for (let name in Game.creeps) {
       let creep = Game.creeps[name];
@@ -13,8 +13,14 @@ export class CreepHandler {
         case "Harvester":
           Harvester.run(creep);
           break;
-        case "Generic":
-          Generic.run(creep);
+        case "SpawnHauler":
+          SpawnHauler.run(creep);
+          break;
+        case "Builder":
+          Builder.run(creep);
+          break;
+        case "Upgrader":
+          Upgrader.run(creep);
           break;
       }
     }

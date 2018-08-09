@@ -1,21 +1,27 @@
-import { Sources } from "memory/Sources";
-import { HarvesterMemory } from "memory/HarvesterMemory";
-import { SpawnList } from "memory/SpawnList";
-import { Rooms } from "memory/Rooms";
-import { GenericMemory } from "memory/GenericMemory";
+import { Sources } from "./Sources";
+import { HarvesterMemory } from "./HarvesterMemory";
+import { SpawnList } from "./SpawnList";
+// import { Rooms } from "./Rooms";
+import { SpawnHaulerMemory } from "./SpawnHaulerMemory";
+import { UpgraderMemory } from "./UpgraderMemory";
+import { BuilderMemory } from "./BuilderMemory";
 
 export class MemoryHandler {
   public static run() {
     Sources.init();
-    Rooms.init();
+    // Rooms.init();
     HarvesterMemory.init();
     SpawnList.init();
-    GenericMemory.init();
+    SpawnHaulerMemory.init();
+    UpgraderMemory.init();
+    BuilderMemory.init();
 
     Sources.run();
     HarvesterMemory.run();
     SpawnList.run();
-    Rooms.run();
-    GenericMemory.run();
+    // Rooms.run();
+    SpawnHaulerMemory.run();
+    UpgraderMemory.run();
+    BuilderMemory.run();
   }
 }

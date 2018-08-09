@@ -6,9 +6,6 @@ export class Harvester {
     if (!source) {
       return CreepUtils.moveRoom(creep, creep.memory.room);
     }
-    if (creep.ticksToLive && creep.ticksToLive > 200) {
-      Memory.harvesters[source.id] = creep.id;
-    }
 
     if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
       creep.moveTo(source);
@@ -38,22 +35,29 @@ export class Harvester {
     return body;
   }
 
-  public static spawn() {
-    for (let sourceId of Memory.sources) {
-      if (Memory.harvesters[sourceId] == null) {
-        let sourceObj = <Source>Game.getObjectById(sourceId);
-        if (!sourceObj) {
-          continue;
-        }
-        Memory.spawnList.push({
-          type: "Harvester",
-          room: sourceObj.room.name,
-          roleMem: {
-            source: sourceId
-          }
-        });
-        Memory.harvesters[sourceId] = "spawning";
+  public static spawn(sourceId: string) {
+    console.log("Going to add a hauler to the spawn queue", sourceId);
+    let body = [MOVE, MOVE, WORK, WORK, WORK, WORK, WORK];
+    let source = <Source>Game.getObjectById(sourceId);
+    if (source) {
+      let roomEnergy = source.room.energyCapacityAvailable;
+      let maxWorksSource = Math.floor(source.energyCapacity / 300 / 2);
+      let maxWorksRoom = Math.floor((roomEnergy - 100) / 100);
+      let loops = Math.min(maxWorksRoom, maxWorksSource);
+      body = [MOVE, MOVE];
+      for (let i = 0; i < loops; i++) {
+        body = body.concat([WORK]);
       }
     }
+
+    Memory.spawnList.push({
+      type: "Harvester",
+      room: source.room.name,
+      roleMem: {
+        source: sourceId
+      },
+      name: "Harvester-" + sourceId,
+      body: body
+    });
   }
 }

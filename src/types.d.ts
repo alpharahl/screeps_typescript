@@ -12,6 +12,8 @@ interface CreepSpawnObj {
   type: string;
   room: string;
   roleMem: any;
+  name: string;
+  body: Array<BodyPartConstant>;
 }
 
 interface Memory {
@@ -20,6 +22,13 @@ interface Memory {
   sources: Array<string>;
   spawnList: Array<CreepSpawnObj>;
   rooms: Array<string>;
+}
+
+interface RoomMemory {
+  spawnHaulers: Array<string>;
+  upgraders: Array<string>;
+  builders: Array<string>;
+  roads: Array<RoomPosition>;
 }
 
 // `global` extension samples

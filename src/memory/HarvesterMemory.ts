@@ -1,3 +1,5 @@
+import { Harvester } from "creeps/harvester";
+
 export class HarvesterMemory {
   public static init() {
     if (!Memory.harvesters) {
@@ -6,11 +8,12 @@ export class HarvesterMemory {
   }
 
   public static run() {
-    for (let sourceId in Memory.harvesters) {
-      var harvester = Game.getObjectById(Memory.harvesters[sourceId]);
-      if (!harvester) {
-        if (Memory.harvesters[sourceId] != "spawning") {
-          Memory.harvesters[sourceId] = null;
+    for (let sourceId of Memory.sources) {
+      if (Memory.harvesters[sourceId] != "spawning") {
+        if (!Game.creeps[Memory.harvesters[sourceId]]) {
+          console.log("I didn't find the harvester for:", sourceId);
+          Harvester.spawn(sourceId);
+          Memory.harvesters[sourceId] = "spawning";
         }
       }
     }

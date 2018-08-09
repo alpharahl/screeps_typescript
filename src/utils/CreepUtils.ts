@@ -12,7 +12,9 @@ export class CreepUtils {
   }
 
   public static pickup(creep: Creep) {
-    var pickups = creep.room.find(FIND_DROPPED_RESOURCES);
+    var pickups = creep.room.find(FIND_DROPPED_RESOURCES, {
+      filter: i => i.amount >= 50
+    });
     var target = creep.pos.findClosestByPath(pickups);
     if (target) {
       if (creep.pickup(target) == ERR_NOT_IN_RANGE) {

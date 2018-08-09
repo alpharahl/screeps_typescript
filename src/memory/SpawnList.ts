@@ -20,8 +20,8 @@ export class SpawnList {
       if (spawn.spawning) {
         return;
       } else {
-        if (Spawner.spawnCreep(spawn, Memory.spawnList[0]) == OK) {
-          Memory.spawnList.splice(0, 1);
+        if (Spawner.spawnCreep(spawn, Memory.spawnList[0])) {
+          Memory.spawnList.shift();
         }
       }
     }
