@@ -16,7 +16,7 @@ export class Builder {
         }
       }
     } else {
-      CreepUtils.pickup(creep);
+      CreepUtils.withdraw(creep);
     }
   }
 

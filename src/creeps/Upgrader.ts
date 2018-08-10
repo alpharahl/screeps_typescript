@@ -6,7 +6,7 @@ export class Upgrader {
     if (creep.memory.working) {
       CreepUtils.upgrade(creep);
     } else {
-      CreepUtils.pickup(creep);
+      CreepUtils.withdraw(creep);
     }
   }
 

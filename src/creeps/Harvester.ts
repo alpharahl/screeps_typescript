@@ -1,4 +1,5 @@
 import { CreepUtils } from "utils/CreepUtils";
+import { PositionUtils } from "utils/PositionUtils";
 
 export class Harvester {
   public static run(creep: Creep) {
@@ -7,8 +8,28 @@ export class Harvester {
       return CreepUtils.moveRoom(creep, creep.memory.room);
     }
 
+    if (creep.memory.container && creep.memory.container != "") {
+      var container = <StructureContainer>Game.getObjectById(creep.memory.container);
+      if (!container) {
+        creep.memory.container = "";
+        return;
+      }
+      if (PositionUtils.compareTwo(container.pos, creep.pos)) {
+        creep.memory.container = "";
+      } else {
+        creep.moveTo(container);
+        return;
+      }
+    }
+
     if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(source);
+      let container = <Array<StructureContainer>>source.pos.findInRange(FIND_STRUCTURES, 1, {
+        filter: { structureType: STRUCTURE_CONTAINER }
+      });
+      if (container.length > 0) {
+        creep.memory.container = container[0].id;
+        creep.moveTo(container[0]);
+      }
     }
   }
 

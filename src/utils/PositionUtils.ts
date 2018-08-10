@@ -14,7 +14,7 @@ export class PositionUtils {
   public static getNeighbor(pos: any, direction: number) {
     // direction can be 1-8, need to make sure it's between 1 & 8 when we subtract 2 from it
     direction = direction - 2;
-    if (direction < 0) {
+    if (direction <= 0) {
       direction + 8;
     }
 

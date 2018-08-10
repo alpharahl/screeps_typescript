@@ -1,3 +1,5 @@
+import { Storages } from "structures/Storage";
+
 export class CreepUtils {
   public static getBodyCost(body: Array<BodyPartConstant>) {
     var cost = 0;
@@ -20,6 +22,51 @@ export class CreepUtils {
       if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
         creep.moveTo(target);
       }
+      return;
+    }
+    var tombstones = creep.room.find(FIND_TOMBSTONES, {
+      filter: i => i.store[RESOURCE_ENERGY] > 0
+    });
+    if (tombstones.length > 0) {
+      var targetTombstone = <Tombstone>creep.pos.findClosestByPath(tombstones);
+      if (creep.withdraw(targetTombstone, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(targetTombstone);
+      }
+      return;
+    }
+    var miningContainers = <Array<StructureContainer>>[];
+
+    for (var n in creep.room.find(FIND_SOURCES)) {
+      var source = creep.room.find(FIND_SOURCES)[n];
+      var containers = <Array<StructureContainer>>(
+        source.pos.findInRange(FIND_STRUCTURES, 1, { filter: { structureType: STRUCTURE_CONTAINER } })
+      );
+      if (containers.length > 0) {
+        for (var c of containers) {
+          if (c.store[RESOURCE_ENERGY] > 50) {
+            miningContainers.push(c);
+          }
+        }
+      }
+    }
+    var targetContainer = <StructureContainer>creep.pos.findClosestByPath(miningContainers);
+    if (creep.withdraw(targetContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+      creep.moveTo(targetContainer);
+    }
+  }
+
+  public static withdraw(creep: Creep, resource: ResourceConstant = RESOURCE_ENERGY) {
+    var structures = creep.room.find(FIND_STRUCTURES, {
+      filter: i =>
+        (i.structureType == STRUCTURE_CONTAINER || i.structureType == STRUCTURE_STORAGE) && i.store[resource] != 0
+    })!;
+    if (structures.length > 0) {
+      var target = <any>creep.pos.findClosestByPath(structures);
+      if (creep.withdraw(target, resource) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(target);
+      }
+    } else {
+      CreepUtils.pickup(creep);
     }
   }
 
@@ -37,7 +84,22 @@ export class CreepUtils {
         (i.structureType == STRUCTURE_EXTENSION || i.structureType == STRUCTURE_SPAWN) && i.energy < i.energyCapacity
     });
     if (!spawns || spawns.length == 0) {
-      return false;
+      var tower = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+        filter: struct => struct.structureType == STRUCTURE_TOWER && struct.energy < 700
+      });
+      if (tower) {
+        if (creep.transfer(tower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+          creep.moveTo(tower);
+        }
+        return true;
+      }
+      var controllerStorage = Storages.getControllerStorage(creep.room);
+      if (controllerStorage) {
+        if (creep.transfer(controllerStorage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+          creep.moveTo(controllerStorage);
+        }
+      }
+      return true;
     }
 
     for (var spawnId in spawns) {

@@ -23,6 +23,7 @@ interface Memory {
   sources: Array<string>;
   spawnList: Array<CreepSpawnObj>;
   rooms: Array<string>;
+  claims: any;
 }
 
 interface RoomMemory {

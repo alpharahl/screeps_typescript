@@ -1,7 +1,7 @@
 import { Sources } from "./Sources";
 import { HarvesterMemory } from "./HarvesterMemory";
 import { SpawnList } from "./SpawnList";
-// import { Rooms } from "./Rooms";
+import { Rooms } from "./Rooms";
 import { SpawnHaulerMemory } from "./SpawnHaulerMemory";
 import { UpgraderMemory } from "./UpgraderMemory";
 import { BuilderMemory } from "./BuilderMemory";
@@ -9,7 +9,6 @@ import { BuilderMemory } from "./BuilderMemory";
 export class MemoryHandler {
   public static run() {
     Sources.init();
-    // Rooms.init();
     HarvesterMemory.init();
     SpawnList.init();
     SpawnHaulerMemory.init();
@@ -19,7 +18,7 @@ export class MemoryHandler {
     Sources.run();
     HarvesterMemory.run();
     SpawnList.run();
-    // Rooms.run();
+    Rooms.claims();
     SpawnHaulerMemory.run();
     UpgraderMemory.run();
     BuilderMemory.run();

@@ -1,4 +1,4 @@
-import { Upgrader } from "creeps/upgrader";
+import { Upgrader } from "creeps/Upgrader";
 
 export class UpgraderMemory {
   public static init() {

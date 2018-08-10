@@ -1,4 +1,4 @@
-import { Builder } from "creeps/builder";
+import { Builder } from "creeps/Builder";
 
 export class BuilderMemory {
   public static init() {
@@ -28,12 +28,20 @@ export class BuilderMemory {
         }
         var numBuilders =
           room.find(FIND_CONSTRUCTION_SITES, {
-            filter: i => i.structureType != STRUCTURE_ROAD
+            filter: i =>
+              i.structureType != STRUCTURE_ROAD &&
+              i.structureType != STRUCTURE_WALL &&
+              i.structureType != STRUCTURE_RAMPART
           }).length / 2;
-        var roadBuilders =
-          room.find(FIND_CONSTRUCTION_SITES, {
-            filter: i => i.structureType == STRUCTURE_ROAD
-          }).length / 5;
+        var roadBuilders = room.find(FIND_CONSTRUCTION_SITES, {
+          filter: i =>
+            i.structureType == STRUCTURE_ROAD ||
+            i.structureType == STRUCTURE_WALL ||
+            i.structureType == STRUCTURE_RAMPART
+        }).length;
+        if (roadBuilders > 0) {
+          roadBuilders = 1;
+        }
         numBuilders = Math.max(numBuilders, roadBuilders);
 
         if (room.memory.builders.length < numBuilders) {
