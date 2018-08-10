@@ -6,6 +6,7 @@ interface CreepMemory {
   room: string;
   roleMem: any;
   working: boolean;
+  container?: string;
 }
 
 interface CreepSpawnObj {
@@ -30,6 +31,7 @@ interface RoomMemory {
   builders: Array<string>;
   roads: Array<RoomPosition>;
   controllerHistory: Array<number>;
+  primaryStorage: string;
 }
 
 // `global` extension samples
