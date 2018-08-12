@@ -12,4 +12,17 @@ export class RoomUtils {
     }
     return false;
   }
+
+  public static ClearSites() {
+    for (var name in Game.rooms) {
+      var room = Game.rooms[name];
+      if (room.memory.clearSites) {
+        var sites = room.find(FIND_CONSTRUCTION_SITES);
+        for (var site of sites) {
+          site.remove();
+        }
+        room.memory.clearSites = false;
+      }
+    }
+  }
 }

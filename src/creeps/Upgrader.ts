@@ -11,12 +11,12 @@ export class Upgrader {
   }
 
   public static spawn(roomName: string) {
-    console.log("Spawning an upgrader for room", roomName);
     let room = Game.rooms[roomName];
     let maxEnergy = room.energyCapacityAvailable;
     let body = <Array<BodyPartConstant>>[MOVE, MOVE, CARRY];
-    let maxWorks = 7;
+    let maxWorks = 8;
     var loops = Math.min(maxWorks, Math.floor((maxEnergy - 150) / 100));
+    loops = Math.max(1, loops);
     for (var i = 0; i < loops; i++) {
       body = body.concat([WORK]);
     }

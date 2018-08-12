@@ -24,6 +24,9 @@ interface Memory {
   spawnList: Array<CreepSpawnObj>;
   rooms: Array<string>;
   claims: any;
+  haulers: any;
+  reserves: any;
+  allies: Array<string>;
 }
 
 interface RoomMemory {
@@ -33,6 +36,8 @@ interface RoomMemory {
   roads: Array<RoomPosition>;
   controllerHistory: Array<number>;
   primaryStorage: string;
+  lastSpawn: number;
+  clearSites: boolean;
 }
 
 // `global` extension samples

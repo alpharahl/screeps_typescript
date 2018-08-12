@@ -42,11 +42,22 @@ export class BuilderMemory {
         if (roadBuilders > 0) {
           roadBuilders = 1;
         }
-        numBuilders = Math.max(numBuilders, roadBuilders);
+        let noSpawnBuilder = 0;
+        if (room.find(FIND_MY_SPAWNS).length == 0 && room.find(FIND_CONSTRUCTION_SITES).length > 0) {
+          noSpawnBuilder = 1;
+        }
+        numBuilders = Math.max(numBuilders, roadBuilders, noSpawnBuilder);
 
         if (room.memory.builders.length < numBuilders) {
           Builder.spawn(room.name);
           room.memory.builders.push("spawning");
+        }
+        if (Game.time % 250 == 0) {
+          var ind = room.memory.builders.indexOf("spawning");
+          while (ind != -1) {
+            room.memory.builders.splice(ind, 1);
+            ind = room.memory.builders.indexOf("spawning");
+          }
         }
       }
     }

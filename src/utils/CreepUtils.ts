@@ -9,8 +9,15 @@ export class CreepUtils {
     return cost;
   }
 
-  public static moveRoom(creep: Creep, roomName: string) {
-    creep.moveTo(new RoomPosition(25, 25, roomName));
+  public static moveRoom(creep: Creep, roomName: string = "") {
+    if (roomName == "") {
+      roomName = creep.memory.room;
+    }
+    if (creep.memory.room != creep.room.name) {
+      creep.moveTo(new RoomPosition(25, 25, roomName));
+      return true;
+    }
+    return false;
   }
 
   public static pickup(creep: Creep) {
@@ -68,6 +75,38 @@ export class CreepUtils {
     } else {
       CreepUtils.pickup(creep);
     }
+  }
+
+  public static deposit(creep: Creep, resource: ResourceConstant = RESOURCE_ENERGY) {
+    var structures = creep.room.find(FIND_STRUCTURES, {
+      filter: i =>
+        (i.structureType == STRUCTURE_CONTAINER || i.structureType == STRUCTURE_STORAGE) &&
+        i.store[resource]! < i.storeCapacity - creep.carry[resource]!
+    })!;
+    if (structures.length > 0) {
+      var target = <any>creep.pos.findClosestByPath(structures);
+      if (creep.transfer(target, resource) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(target);
+      }
+    }
+  }
+
+  public static findHostileCreeps(room: Room) {
+    return room.find(FIND_HOSTILE_CREEPS, {
+      filter: creep => Memory.allies.indexOf(creep.owner.username) == -1
+    });
+  }
+
+  public static findHostileStructures(room: Room) {
+    return room.find(FIND_HOSTILE_STRUCTURES, {
+      filter: struct => Memory.allies.indexOf(struct.owner.username) == -1
+    });
+  }
+
+  public static findHostileSpawns(room: Room) {
+    return room.find(FIND_HOSTILE_SPAWNS, {
+      filter: struct => Memory.allies.indexOf(struct.owner.username) == -1
+    });
   }
 
   public static setWorking(creep: Creep) {

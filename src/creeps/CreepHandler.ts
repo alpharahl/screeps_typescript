@@ -2,6 +2,9 @@ import { Harvester } from "./harvester";
 import { SpawnHauler } from "./SpawnHauler";
 import { Builder } from "./Builder";
 import { Upgrader } from "./Upgrader";
+import { Claimer } from "./Claimer";
+import { RemoteHauler } from "./RemoteHauler";
+import { Reserver } from "./Reserver";
 
 export class CreepHandler {
   public static run() {
@@ -21,6 +24,15 @@ export class CreepHandler {
           break;
         case "Upgrader":
           Upgrader.run(creep);
+          break;
+        case "Claimer":
+          Claimer.run(creep);
+          break;
+        case "RemoteHauler":
+          RemoteHauler.run(creep);
+          break;
+        case "Reserver":
+          Reserver.run(creep);
           break;
       }
     }

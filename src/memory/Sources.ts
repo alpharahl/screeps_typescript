@@ -12,7 +12,14 @@ export class Sources {
       if (!controller) {
         return;
       }
-      if (controller.owner.username == "alpha-rahl") {
+      if (controller.owner && controller.owner.username == "alpha-rahl") {
+        var sources = room.find(FIND_SOURCES);
+        for (let source of sources) {
+          if (!Memory.sources.includes(source.id)) {
+            Memory.sources.push(source.id);
+          }
+        }
+      } else if (controller.reservation && controller.reservation.username == "alpha-rahl") {
         var sources = room.find(FIND_SOURCES);
         for (let source of sources) {
           if (!Memory.sources.includes(source.id)) {

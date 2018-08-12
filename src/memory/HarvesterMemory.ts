@@ -15,6 +15,8 @@ export class HarvesterMemory {
           Harvester.spawn(sourceId);
           Memory.harvesters[sourceId] = "spawning";
         }
+      } else if (Game.time % 250 == 0){
+        Memory.harvesters[sourceId] = null
       }
     }
   }

@@ -1,4 +1,5 @@
 import { RoomUtils } from "utils/RoomUtils";
+import { CreepUtils } from "utils/CreepUtils";
 
 export class Towers {
   public static build() {
@@ -35,7 +36,7 @@ export class Towers {
           room.find(FIND_STRUCTURES, { filter: struct => struct.structureType == STRUCTURE_TOWER })
         );
         for (let tower of towers) {
-          var hostileCreeps = room.find(FIND_HOSTILE_CREEPS);
+          var hostileCreeps = CreepUtils.findHostileCreeps(room);
           if (hostileCreeps.length > 0) {
             tower.attack(hostileCreeps[0]);
           } else {
@@ -58,7 +59,7 @@ export class Towers {
                 return 0;
               }
             );
-            if (repairTargets.length > 0 && tower.energy > 200) {
+            if (repairTargets.length > 0 && tower.energy > 400) {
               tower.repair(sortedTargets[0]);
             }
           }

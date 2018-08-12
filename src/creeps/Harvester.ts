@@ -8,6 +8,20 @@ export class Harvester {
       return CreepUtils.moveRoom(creep, creep.memory.room);
     }
 
+    if (!creep.ticksToLive || creep.ticksToLive > 200) {
+      Memory.harvesters[source.id] = creep.name;
+    } else {
+      if (creep.memory.room == Game.spawns[Object.keys(Game.spawns)[0]].room.name) {
+        if (creep.ticksToLive == 100) {
+          Memory.harvesters[source.id] = null;
+        }
+      } else {
+        if (creep.ticksToLive == 200) {
+          Memory.harvesters[source.id] = null;
+        }
+      }
+    }
+
     if (creep.memory.container && creep.memory.container != "") {
       var container = <StructureContainer>Game.getObjectById(creep.memory.container);
       if (!container) {
@@ -29,8 +43,11 @@ export class Harvester {
       if (container.length > 0) {
         creep.memory.container = container[0].id;
         creep.moveTo(container[0]);
+      } else {
+        creep.moveTo(source);
       }
     }
+    return;
   }
 
   public static getBodySetup(spawnRoom: string, sourceId: string) {
@@ -50,6 +67,8 @@ export class Harvester {
     var ratioCost = CreepUtils.getBodyCost(ratio);
     let body: Array<BodyPartConstant> = [];
     let loops = Math.min(maxWorks, Math.floor(maxEnergy / ratioCost));
+    loops = Math.min(loops, 3);
+    loops = Math.max(1, loops);
     for (var i = 0; i < loops; i++) {
       body = body.concat(ratio);
     }
@@ -71,14 +90,16 @@ export class Harvester {
       }
     }
 
-    Memory.spawnList.push({
-      type: "Harvester",
-      room: source.room.name,
-      roleMem: {
-        source: sourceId
-      },
-      name: "Harvester-" + sourceId,
-      body: body
-    });
+    console.log(
+      Memory.spawnList.unshift({
+        type: "Harvester",
+        room: source.room.name,
+        roleMem: {
+          source: sourceId
+        },
+        name: "Harvester-" + sourceId,
+        body: body
+      })
+    );
   }
 }

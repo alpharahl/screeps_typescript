@@ -38,7 +38,7 @@ export class Storages {
           }
         } else if (controller.reservation && controller.reservation.username == "alpha-rahl") {
           for (var source of room.find(FIND_SOURCES)) {
-            Storages.build(room, 0, source.pos, Game.spawns[0].pos);
+            Storages.build(room, 0, source.pos, Game.spawns[Object.keys(Game.spawns)[0]].pos);
           }
         }
       }
@@ -65,6 +65,10 @@ export class Storages {
 
   private static build(room: Room, step: number, containerTarget: RoomPosition, direction: RoomPosition) {
     let firstStep = room.findPath(containerTarget, direction, { ignoreCreeps: true })[step];
+    if (!firstStep) {
+      console.log("Tried to build a container in room", room, "but failed");
+      return;
+    }
     new RoomPosition(firstStep.x, firstStep.y, room.name).createConstructionSite(STRUCTURE_CONTAINER);
   }
 }

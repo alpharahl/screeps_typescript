@@ -8,7 +8,14 @@ export class PositionUtils {
   }
 
   public static getPosFromMem(memPos: any) {
+    if (!memPos) {
+      return;
+    }
     return new RoomPosition(memPos.x, memPos.y, memPos.roomName);
+  }
+
+  public static getClosestSpawn(pos: RoomPosition) {
+    return Game.spawns[Object.keys(Game.spawns)[0]];
   }
 
   public static getNeighbor(pos: any, direction: number) {

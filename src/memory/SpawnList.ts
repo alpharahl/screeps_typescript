@@ -8,20 +8,20 @@ export class SpawnList {
   }
 
   public static run() {
-    if (Memory.spawnList.length > 0) {
-      var room = Game.rooms[Memory.spawnList[0].room];
-      var spawn = Game.spawns[0];
+    for (var spawnData of Memory.spawnList) {
+      var room = Game.rooms[spawnData.room];
+      var spawn = Game.spawns[Object.keys(Game.spawns)[0]];
       if (room) {
         var spawns = room.find(FIND_MY_SPAWNS);
-        spawns.forEach(roomSpawn => {
-          spawn = roomSpawn;
-        });
+        if (spawns.length > 0) {
+          spawn = spawns[0];
+        }
       }
       if (spawn.spawning) {
-        return;
+        continue;
       } else {
-        if (Spawner.spawnCreep(spawn, Memory.spawnList[0])) {
-          Memory.spawnList.shift();
+        if (Spawner.spawnCreep(spawn, spawnData)) {
+          Memory.spawnList.splice(Memory.spawnList.indexOf(spawnData), 1);
         }
       }
     }

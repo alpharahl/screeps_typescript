@@ -4,7 +4,7 @@ export class Extensions {
   public static run() {
     for (let name in Game.rooms) {
       var room = Game.rooms[name];
-      if (room.controller && room.controller.owner.username == "alpha-rahl") {
+      if (room.controller && room.controller.owner && room.controller.owner.username == "alpha-rahl") {
         let controllerLevel = room.controller.level;
         let neededExtensions = CONTROLLER_STRUCTURES["extension"][controllerLevel];
         let currentExtensions = room.find(FIND_MY_STRUCTURES, {

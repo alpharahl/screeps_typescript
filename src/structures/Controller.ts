@@ -3,7 +3,7 @@ export class Controller {
     for (let name in Game.rooms) {
       let room = Game.rooms[name];
       let controller = room.controller;
-      if (!controller || controller.owner.username != "alpha-rahl") {
+      if (!controller || !controller.owner || controller.owner.username != "alpha-rahl") {
         // not interested in this room, exit
         continue;
       } else {

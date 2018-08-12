@@ -2,6 +2,17 @@ import { CreepUtils } from "utils/CreepUtils";
 
 export class SpawnHauler {
   public static run(creep: Creep) {
+    if (!creep.ticksToLive || creep.ticksToLive > 200) {
+      var room = creep.room;
+      if (room.memory.spawnHaulers.indexOf(creep.name) == -1) {
+        room.memory.spawnHaulers.push(creep.name);
+        var ind = room.memory.spawnHaulers.indexOf("spawning");
+        if (ind != -1) {
+          room.memory.spawnHaulers.splice(ind, 1);
+        }
+      }
+    }
+
     CreepUtils.setWorking(creep);
     if (creep.memory.working) {
       CreepUtils.fillSpawn(creep);
@@ -22,16 +33,20 @@ export class SpawnHauler {
     let body = <Array<BodyPartConstant>>[];
     let ratio = <Array<BodyPartConstant>>[MOVE, CARRY, CARRY];
     let loops = Math.floor(maxEnergy / CreepUtils.getBodyCost(ratio));
+    loops = Math.min(loops, 5);
+    loops = Math.max(1, loops);
     for (let i = 0; i < loops; i++) {
       body = body.concat(ratio);
     }
 
-    Memory.spawnList.push({
-      type: "SpawnHauler",
-      room: roomName,
-      roleMem: {},
-      name: "SpawnHauler" + Game.time,
-      body: body
-    });
+    console.log(
+      Memory.spawnList.unshift({
+        type: "SpawnHauler",
+        room: roomName,
+        roleMem: {},
+        name: "SpawnHauler" + Game.time,
+        body: body
+      })
+    );
   }
 }
