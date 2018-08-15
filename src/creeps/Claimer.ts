@@ -9,7 +9,6 @@ export class Claimer {
       type: "Claimer",
       room: room,
       roleMem: {},
-      name: "Claimer" + room,
       body: [MOVE, MOVE, CLAIM, WORK]
     });
   }

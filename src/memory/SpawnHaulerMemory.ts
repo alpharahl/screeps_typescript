@@ -28,7 +28,6 @@ export class SpawnHaulerMemory {
           }
         }
         if (room.memory.spawnHaulers.length < 2) {
-          SpawnHauler.spawn(room.name);
           room.memory.spawnHaulers.push("spawning");
         }
       }

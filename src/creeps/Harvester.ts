@@ -1,5 +1,6 @@
 import { CreepUtils } from "utils/CreepUtils";
 import { PositionUtils } from "utils/PositionUtils";
+import { RoomUtils } from "utils/RoomUtils";
 
 export class Harvester {
   public static run(creep: Creep) {
@@ -7,13 +8,9 @@ export class Harvester {
     if (!source) {
       return CreepUtils.moveRoom(creep, creep.memory.room);
     }
-
-    if (!creep.ticksToLive || creep.ticksToLive > 200) {
-      Memory.harvesters[source.id] = creep.name;
-    } else {
-      if (creep.memory.room == Game.spawns[Object.keys(Game.spawns)[0]].room.name) {
-      } else {
-      }
+    if (!creep.ticksToLive) {
+      var room = Game.rooms[creep.memory.room];
+      room.memory.harvesters[creep.memory.sourceId] = creep.name;
     }
 
     if (creep.memory.container && creep.memory.container != "") {
@@ -44,63 +41,57 @@ export class Harvester {
     return;
   }
 
-  public static getBodySetup(spawnRoom: string, sourceId: string) {
-    var room = Game.rooms[spawnRoom];
-    var maxEnergy = 300;
-    var sourceTotal = 1500;
-    if (room) {
-      maxEnergy = room.energyCapacityAvailable;
+  public static spawn(room: Room) {
+    console.log("Do I need a harvester in ", room);
+    for (var sourceId of room.memory.sources) {
+      if (!room.memory.harvesters[sourceId]) {
+        return Harvester.createCreep(room, sourceId);
+      }
     }
-    var source = <Source>Game.getObjectById(sourceId);
-    if (source) {
-      sourceTotal = source.energyCapacity;
-    }
-    // Max works is total in source per refresh at 2 ticks per work
-    let maxWorks = Math.floor(sourceTotal / 300 / 2);
-    let ratio: Array<BodyPartConstant> = [MOVE, WORK, WORK];
-    var ratioCost = CreepUtils.getBodyCost(ratio);
-    let body: Array<BodyPartConstant> = [];
-    let loops = Math.min(maxWorks, Math.floor(maxEnergy / ratioCost));
-    loops = Math.min(loops, 3);
-    loops = Math.max(1, loops);
-    for (var i = 0; i < loops; i++) {
-      body = body.concat(ratio);
-    }
+    return false;
+  }
+
+  public static getBody(spawnRoom: Room, sourceId: string) {
+    var source = <Source>Game.getObjectById(sourceId)!;
+    // Total energy / 300 ticks per regen / 2 energy per work per tick
+    var maxWorks = Math.ceil(source.energyCapacity / 300 / 2);
+    var energyAvail = spawnRoom.energyAvailable;
+    var bodyRatio = [MOVE, WORK, WORK];
+    var ratioCost = CreepUtils.getBodyCost(bodyRatio);
+    var numRatios = Math.floor(energyAvail / ratioCost);
+    var moves = <Array<BodyPartConstant>>[];
+    var works = <Array<BodyPartConstant>>[];
+
+    var body = moves.concat(works);
+    console.log("tyring to spawn", body, "with", energyAvail);
     return body;
   }
 
-  public static spawn(sourceId: string) {
-    console.log("Going to add a hauler to the spawn queue", sourceId);
-    let body = [MOVE, MOVE, WORK, WORK, WORK, WORK, WORK];
-    let source = <Source>Game.getObjectById(sourceId);
-    if (source) {
-      let roomEnergy = source.room.energyCapacityAvailable;
-      let maxWorksSource = Math.floor(source.energyCapacity / 300 / 2);
-      let maxWorksRoom = Math.floor((roomEnergy - 100) / 100);
-      let loops = Math.min(maxWorksRoom, maxWorksSource);
-      body = [MOVE, MOVE];
-      for (let i = 0; i < loops; i++) {
-        body = body.concat([WORK]);
-      }
+  public static createCreep(room: Room, sourceId: string) {
+    console.log("I need a harvester for", room, "/", sourceId);
+    var spawn = RoomUtils.findBestSpawn(room);
+    if (spawn.spawning) {
+      return false;
     }
-    if (!source || !source.room) {
-      return;
-    }
-
-    var length = Memory.spawnList.length;
-    Memory.spawnList.unshift({
+    var body = Harvester.getBody(spawn.room, sourceId);
+    var creepMemory = {
       type: "Harvester",
-      room: source.room.name,
+      room: room.name,
       roleMem: {
         source: sourceId
       },
-      name: "Harvester-" + sourceId,
-      body: body
+      working: false
+    };
+    var name = "Harvester" + "-" + spawn.name + "=" + sourceId + "-" + Game.time;
+    var result = spawn.spawnCreep(body, name, {
+      memory: creepMemory
     });
-    if (Memory.spawnList.length == length) {
-      console.log("Err: failed to scheduel harvester");
-      return false;
+    if (result == OK) {
+      room.memory.harvesters[sourceId] = "spawning";
+      return true;
+    } else {
+      console.log(result);
     }
-    return true;
+    return false;
   }
 }

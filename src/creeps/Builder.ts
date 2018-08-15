@@ -84,7 +84,6 @@ export class Builder {
       type: "Builder",
       room: roomName,
       roleMem: {},
-      name: "Upgrader" + Game.time,
       body: body
     });
   }

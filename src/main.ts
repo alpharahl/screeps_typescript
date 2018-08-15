@@ -10,19 +10,19 @@ export const loop = ErrorMapper.wrapLoop(() => {
   try {
     MemoryHandler.run();
   } catch (e) {
-    console.log("Memory failed with:", e);
+    console.log("Memory failed with:", e.stack);
   }
 
   try {
     BuildingHandler.run();
   } catch (e) {
-    console.log("Building failed with:", e);
+    console.log("Building failed with:", e.stack);
   }
 
   try {
     CreepHandler.run();
   } catch (e) {
-    console.log("Creep failed with:", e);
+    console.log("Creep failed with:", e.stack);
   }
   // Automatically delete memory of missing creeps
   for (const name in Memory.creeps) {

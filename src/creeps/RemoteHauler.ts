@@ -42,7 +42,6 @@ export class RemoteHauler {
         spawnRoom: spawn.room.name,
         source: source.id
       },
-      name: "Hauler-" + source.id,
       body: body
     });
     Memory.haulers[source.id] = "spawning";

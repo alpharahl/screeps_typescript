@@ -9,28 +9,7 @@ export class Spawner {
     var room = Game.rooms[spawnObj.room];
     switch (spawnObj.type) {
       case "Harvester":
-        var body = Harvester.getBodySetup(spawn.room.name, spawnObj.roleMem.source);
-        var memory: CreepMemory = {
-          type: spawnObj.type,
-          room: spawnObj.room,
-          roleMem: spawnObj.roleMem,
-          working: false
-        };
-        result = spawn.spawnCreep(body, spawnObj.type + "-" + Game.time, {
-          memory: memory
-        });
-        if (result == OK) {
-          room.memory.lastSpawn = Game.time;
-          Memory.harvesters[spawnObj.roleMem.source] = "Harvester-" + Game.time;
-          return true;
-        } else if (spawn.room.energyAvailable >= 300) {
-          while (result != OK && spawn.room.memory.lastSpawn < Game.time - 200) {
-            body.splice(body.length - 1, 1);
-            result = spawn.spawnCreep(body, spawnObj.type + "-" + Game.time, { memory: memory });
-          }
-          return true;
-        }
-        return false;
+        break;
       case "SpawnHauler":
         var memory = <CreepMemory>Spawner.creepMemory(spawnObj);
         var name = spawnObj.type + "-" + Game.time;

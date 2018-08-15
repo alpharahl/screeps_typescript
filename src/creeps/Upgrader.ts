@@ -24,7 +24,6 @@ export class Upgrader {
       type: "Upgrader",
       room: roomName,
       roleMem: {},
-      name: "Upgrader" + Game.time,
       body: body
     });
   }

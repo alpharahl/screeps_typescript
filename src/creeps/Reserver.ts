@@ -7,7 +7,6 @@ export class Reserver {
       roleMem: {
         ticksToReplace: 0
       },
-      name: "Reserver" + room,
       body: [MOVE, MOVE, CLAIM]
     });
   }

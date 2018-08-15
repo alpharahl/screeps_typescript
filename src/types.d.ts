@@ -13,7 +13,6 @@ interface CreepSpawnObj {
   type: string;
   room: string;
   roleMem: any;
-  name: string;
   body: Array<BodyPartConstant>;
 }
 
@@ -39,6 +38,10 @@ interface RoomMemory {
   lastSpawn: number;
   clearSites: boolean;
   sources: Array<string>;
+  harvesters: any;
+  localHaulers: any;
+  remoteHaulers: any;
+  ignoreMe: any;
 }
 
 // `global` extension samples

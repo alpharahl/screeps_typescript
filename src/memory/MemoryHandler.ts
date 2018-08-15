@@ -9,7 +9,6 @@ import { HaulerMemory } from "./HaulerMemory";
 
 export class MemoryHandler {
   public static run() {
-    Sources.init();
     HarvesterMemory.init();
     SpawnList.init();
     SpawnHaulerMemory.init();
