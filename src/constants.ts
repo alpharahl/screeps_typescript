@@ -5,7 +5,8 @@ export const CREEP_PRIORITY: string[] = [
   "Builder",
   "Upgrader",
   "Reserver",
-  "RemoteHauler"
+  "RemoteHauler",
+  "Claimer"
 ];
 
 export const ALPHA: string = "alpha-rahl";

@@ -10,7 +10,7 @@ export class Harvester {
     }
     if (!creep.ticksToLive) {
       var room = Game.rooms[creep.memory.room];
-      room.memory.harvesters[creep.memory.sourceId] = creep.name;
+      room.memory.harvesters[creep.memory.roleMem.source] = creep.name;
     }
 
     if (creep.memory.container && creep.memory.container != "") {
@@ -42,7 +42,6 @@ export class Harvester {
   }
 
   public static spawn(room: Room) {
-    console.log("Do I need a harvester in ", room);
     for (var sourceId of room.memory.sources) {
       if (!room.memory.harvesters[sourceId]) {
         return Harvester.createCreep(room, sourceId);
@@ -56,11 +55,14 @@ export class Harvester {
     // Total energy / 300 ticks per regen / 2 energy per work per tick
     var maxWorks = Math.ceil(source.energyCapacity / 300 / 2);
     var energyAvail = spawnRoom.energyAvailable;
-    var bodyRatio = [MOVE, WORK, WORK];
-    var ratioCost = CreepUtils.getBodyCost(bodyRatio);
-    var numRatios = Math.floor(energyAvail / ratioCost);
+    var numWorks = Math.floor((energyAvail - 100) / 100);
+    numWorks = Math.min(numWorks, maxWorks);
     var moves = <Array<BodyPartConstant>>[];
     var works = <Array<BodyPartConstant>>[];
+    moves = [MOVE, MOVE];
+    for (var i = 0; i < numWorks; i++) {
+      works = works.concat([WORK]);
+    }
 
     var body = moves.concat(works);
     console.log("tyring to spawn", body, "with", energyAvail);
@@ -68,9 +70,9 @@ export class Harvester {
   }
 
   public static createCreep(room: Room, sourceId: string) {
-    console.log("I need a harvester for", room, "/", sourceId);
+    console.log("Attempting to spawn a harvester for room", room);
     var spawn = RoomUtils.findBestSpawn(room);
-    if (spawn.spawning) {
+    if (spawn.spawning || spawn.room.energyAvailable < 300) {
       return false;
     }
     var body = Harvester.getBody(spawn.room, sourceId);
@@ -90,7 +92,7 @@ export class Harvester {
       room.memory.harvesters[sourceId] = "spawning";
       return true;
     } else {
-      console.log(result);
+      console.log("Failed to spawn harvester with error", result);
     }
     return false;
   }

@@ -16,19 +16,17 @@ export class UpgraderMemory {
   public static run() {
     for (let n in Game.rooms) {
       var room = Game.rooms[n];
-      if (room.memory.upgraders) {
-        for (let creepName of room.memory.upgraders) {
-          if (creepName != "spawning") {
-            let creep = Game.creeps[creepName];
-            if (!creep) {
-              var index = room.memory.upgraders.indexOf(creepName);
-              room.memory.upgraders.splice(index, 1);
-            }
+      if (!room.memory.upgraders) {
+        room.memory.upgraders = [];
+      }
+      for (var name of room.memory.upgraders) {
+        if (name == "spawning") {
+          continue;
+        } else {
+          if (!Game.creeps[name]) {
+            let ind = room.memory.upgraders.indexOf(name);
+            room.memory.upgraders.splice(ind, 1);
           }
-        }
-        if (room.memory.upgraders.length < 2) {
-          Upgrader.spawn(room.name);
-          room.memory.upgraders.push("spawning");
         }
       }
     }

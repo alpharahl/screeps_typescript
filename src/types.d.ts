@@ -32,6 +32,7 @@ interface RoomMemory {
   spawnHaulers: Array<string>;
   upgraders: Array<string>;
   builders: Array<string>;
+  builderCount: number;
   roads: Array<RoomPosition>;
   controllerHistory: Array<number>;
   primaryStorage: string;

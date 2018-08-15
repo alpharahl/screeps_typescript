@@ -1,7 +1,16 @@
 import { CreepUtils } from "utils/CreepUtils";
+import { RoomUtils } from "utils/RoomUtils";
 
 export class Builder {
   public static run(creep: Creep) {
+    if (!creep.ticksToLive) {
+      var room = creep.room;
+      if (room.memory.builders.indexOf(creep.name) == -1) {
+        var indSpawning = room.memory.builders.indexOf("spawning");
+        room.memory.builders.splice(indSpawning, 1);
+        room.memory.builders.push(creep.name);
+      }
+    }
     CreepUtils.setWorking(creep);
     if (creep.memory.working) {
       var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES, {
@@ -66,25 +75,50 @@ export class Builder {
     }
   }
 
-  public static spawn(roomName: string) {
-    let room = Game.rooms[roomName];
-    if (room.find(FIND_MY_SPAWNS).length == 0) {
-      room = Game.spawns[Object.keys(Game.spawns)[0]].room;
+  public static spawn(room: Room) {
+    if (room.memory.builders.length < room.memory.builderCount) {
+      return Builder.createCreep(room);
     }
-    let maxEnergy = room.energyCapacityAvailable;
-    let ratio = <Array<BodyPartConstant>>[MOVE, CARRY, WORK];
-    let body = <Array<BodyPartConstant>>[];
-    var loops = Math.floor(maxEnergy / CreepUtils.getBodyCost(ratio));
-    loops = Math.min(loops, 5);
-    loops = Math.max(1, loops);
+    return false;
+  }
+
+  public static getBody(spawnRoom: Room) {
+    var energyAvailable = spawnRoom.energyAvailable;
+    var ratio = [MOVE, WORK, CARRY];
+    var ratioCost = CreepUtils.getBodyCost(ratio);
+    var loops = Math.floor(energyAvailable / ratioCost);
+    var body = <Array<BodyPartConstant>>[];
     for (var i = 0; i < loops; i++) {
       body = body.concat(ratio);
     }
-    Memory.spawnList.push({
+    return body;
+  }
+
+  public static createCreep(room: Room) {
+    console.log("Attempting to spawn an builder for", room);
+    var spawn = RoomUtils.findBestSpawn(room);
+    if (spawn.spawning || spawn.room.energyAvailable < 300) {
+      return false;
+    }
+    var body = Builder.getBody(spawn.room);
+    var creepMemory = {
       type: "Builder",
-      room: roomName,
+      room: room.name,
       roleMem: {},
-      body: body
+      working: false
+    };
+    var name = "Builder" + "-" + spawn.name + "-" + Game.time;
+    var result = spawn.spawnCreep(body, name, {
+      memory: creepMemory
     });
+
+    if (result == OK) {
+      room.memory.builders.push("spawning");
+      return true;
+    } else {
+      console.log("Failed to spawn Builder with error", result);
+    }
+
+    return false;
   }
 }

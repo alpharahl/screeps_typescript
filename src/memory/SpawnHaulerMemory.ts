@@ -16,19 +16,17 @@ export class SpawnHaulerMemory {
   public static run() {
     for (let n in Game.rooms) {
       var room = Game.rooms[n];
-      if (room.memory.spawnHaulers) {
-        // This room needs a spawn hauler, manage it
-        for (let creepName of room.memory.spawnHaulers) {
-          if (creepName != "spawning") {
-            let creep = Game.creeps[creepName];
-            if (!creep) {
-              var index = room.memory.spawnHaulers.indexOf(creepName);
-              room.memory.spawnHaulers.splice(index, 1);
-            }
+      if (!room.memory.spawnHaulers) {
+        room.memory.spawnHaulers = [];
+      }
+      for (var name of room.memory.spawnHaulers) {
+        if (name == "spawning") {
+          continue;
+        } else {
+          if (!Game.creeps[name]) {
+            let ind = room.memory.spawnHaulers.indexOf(name);
+            room.memory.spawnHaulers.splice(ind, 1);
           }
-        }
-        if (room.memory.spawnHaulers.length < 2) {
-          room.memory.spawnHaulers.push("spawning");
         }
       }
     }

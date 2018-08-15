@@ -1,6 +1,11 @@
 import { CREEP_PRIORITY } from "../constants";
 import { Harvester } from "./Harvester";
 import { SpawnHauler } from "./SpawnHauler";
+import { Builder } from "./Builder";
+import { Upgrader } from "./Upgrader";
+import { Reserver } from "./Reserver";
+import { RemoteHauler } from "./RemoteHauler";
+import { Claimer } from "./Claimer";
 
 export class CreepSpawner {
   public static run() {
@@ -20,6 +25,20 @@ export class CreepSpawner {
             case "SpawnHauler":
               spawned = SpawnHauler.spawn(room);
               break;
+            // case "LocalHauler":
+            //   break;
+            case "Builder":
+              spawned = Builder.spawn(room);
+              break;
+            case "Upgrader":
+              spawned = Upgrader.spawn(room);
+              break;
+            // case "Reserver":
+            //   break;
+            // case "RemoteHauler":
+            //   break;
+            // case "Claimer":
+            //   break;
           }
         }
       }

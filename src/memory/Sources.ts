@@ -9,15 +9,15 @@ export class Sources {
       }
     }
     if (!room.memory.harvesters) {
-      room.memory.harvesters = [];
+      room.memory.harvesters = {};
     }
     if (room.controller!.owner) {
       if (!room.memory.localHaulers) {
-        room.memory.localHaulers = [];
+        room.memory.localHaulers = {};
       }
     } else {
       if (!room.memory.remoteHaulers) {
-        room.memory.remoteHaulers = [];
+        room.memory.remoteHaulers = {};
       }
     }
   }
@@ -35,18 +35,23 @@ export class Sources {
   }
 
   public static clearCreeps(room: Room, sourceId: string) {
-    let harvester = Game.creeps[room.memory.harvesters[sourceId]];
-    let localHauler = Game.creeps[room.memory.localHaulers[sourceId]];
-    let remoteHauler = Game.creeps[room.memory.remoteHaulers[sourceId]];
-
-    if (!harvester && room.memory.harvesters[sourceId] != "spawning") {
-      room.memory.harvesters[sourceId] = null;
+    if (room.memory.harvesters) {
+      let harvester = Game.creeps[room.memory.harvesters[sourceId]];
+      if (!harvester && room.memory.harvesters[sourceId] != "spawning") {
+        room.memory.harvesters[sourceId] = null;
+      }
     }
-    if (!localHauler && room.memory.localHaulers[sourceId] != "spawning") {
-      room.memory.localHaulers[sourceId] = null;
+    if (room.memory.localHaulers) {
+      let localHauler = Game.creeps[room.memory.localHaulers[sourceId]];
+      if (!localHauler && room.memory.localHaulers[sourceId] != "spawning") {
+        room.memory.localHaulers[sourceId] = null;
+      }
     }
-    if (!remoteHauler && room.memory.remoteHaulers[sourceId] != "spawning") {
-      room.memory.remoteHaulers[sourceId] = null;
+    if (room.memory.remoteHaulers) {
+      let remoteHauler = Game.creeps[room.memory.remoteHaulers[sourceId]];
+      if (!remoteHauler && room.memory.remoteHaulers[sourceId] != "spawning") {
+        room.memory.remoteHaulers[sourceId] = null;
+      }
     }
   }
 }
