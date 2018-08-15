@@ -38,6 +38,7 @@ interface RoomMemory {
   primaryStorage: string;
   lastSpawn: number;
   clearSites: boolean;
+  sources: Array<string>;
 }
 
 // `global` extension samples

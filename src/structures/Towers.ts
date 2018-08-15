@@ -5,7 +5,7 @@ export class Towers {
   public static build() {
     for (var name in Game.rooms) {
       var room = Game.rooms[name];
-      if (RoomUtils.OwnedByMe(room)) {
+      if (RoomUtils.OwnedByMe(room) && room.controller!.owner) {
         let controller = room.controller!;
         var towerNumPossible = CONTROLLER_STRUCTURES["tower"][controller.level];
         var towerCount = room.find(FIND_MY_STRUCTURES, {
@@ -14,15 +14,14 @@ export class Towers {
         towerCount += room.find(FIND_CONSTRUCTION_SITES, {
           filter: s => s.structureType == STRUCTURE_TOWER
         }).length;
-        if (towerCount < towerNumPossible) {
-          while (towerCount < towerNumPossible) {
-            let spawn = room.find(FIND_MY_SPAWNS)[0];
-            let path = room.findPath(spawn.pos, controller.pos, { ignoreCreeps: true });
-            let middleStep = path[path.length / 2 + towerCount];
-            let pos = new RoomPosition(middleStep.x, middleStep.y, room.name);
-            pos.createConstructionSite(STRUCTURE_TOWER);
-            towerCount++;
-          }
+        while (towerCount < towerNumPossible) {
+          let spawn = room.find(FIND_MY_SPAWNS)[0];
+          let path = room.findPath(spawn.pos, controller.pos, { ignoreCreeps: true });
+
+          let middleStep = path[Math.floor(path.length / 2) + towerCount];
+          let pos = new RoomPosition(middleStep.x, middleStep.y, room.name);
+          pos.createConstructionSite(STRUCTURE_TOWER);
+          towerCount++;
         }
       }
     }

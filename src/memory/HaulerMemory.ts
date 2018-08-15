@@ -9,7 +9,8 @@ export class HaulerMemory {
     for (var id of Memory.sources) {
       var source = <Source>Game.getObjectById(id);
       if (source) {
-        if (!RoomUtils.OwnedByMe(source.room)) {
+        let room = source.room;
+        if (!room.controller || !room.controller.owner) {
           if (!Memory.haulers[id]) {
             Memory.haulers[id] = null;
             RemoteHauler.spawn(source, source.room);

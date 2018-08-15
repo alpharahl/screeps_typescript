@@ -39,14 +39,18 @@ export class SpawnHauler {
       body = body.concat(ratio);
     }
 
-    console.log(
-      Memory.spawnList.unshift({
-        type: "SpawnHauler",
-        room: roomName,
-        roleMem: {},
-        name: "SpawnHauler" + Game.time,
-        body: body
-      })
-    );
+    var length = Memory.spawnList.length;
+    Memory.spawnList.unshift({
+      type: "SpawnHauler",
+      room: roomName,
+      roleMem: {},
+      name: "SpawnHauler" + Game.time,
+      body: body
+    });
+    if (Memory.spawnList.length == length) {
+      console.log("ERR: Failed to schedule spawn hauler");
+      return false;
+    }
+    return true;
   }
 }

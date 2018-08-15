@@ -12,13 +12,7 @@ export class Harvester {
       Memory.harvesters[source.id] = creep.name;
     } else {
       if (creep.memory.room == Game.spawns[Object.keys(Game.spawns)[0]].room.name) {
-        if (creep.ticksToLive == 100) {
-          Memory.harvesters[source.id] = null;
-        }
       } else {
-        if (creep.ticksToLive == 200) {
-          Memory.harvesters[source.id] = null;
-        }
       }
     }
 
@@ -89,17 +83,24 @@ export class Harvester {
         body = body.concat([WORK]);
       }
     }
+    if (!source || !source.room) {
+      return;
+    }
 
-    console.log(
-      Memory.spawnList.unshift({
-        type: "Harvester",
-        room: source.room.name,
-        roleMem: {
-          source: sourceId
-        },
-        name: "Harvester-" + sourceId,
-        body: body
-      })
-    );
+    var length = Memory.spawnList.length;
+    Memory.spawnList.unshift({
+      type: "Harvester",
+      room: source.room.name,
+      roleMem: {
+        source: sourceId
+      },
+      name: "Harvester-" + sourceId,
+      body: body
+    });
+    if (Memory.spawnList.length == length) {
+      console.log("Err: failed to scheduel harvester");
+      return false;
+    }
+    return true;
   }
 }

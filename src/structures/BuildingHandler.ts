@@ -11,10 +11,11 @@ export class BuildingHandler {
   public static run() {
     if (Game.time % 50 == 0) {
       Extensions.run();
+    } else if (Game.time % 50 == 10) {
       Roads.run();
+    } else if (Game.time % 50 == 20) {
       Storages.placeContainers();
       Storages.buildStorage();
-      // Defenses.run();
     }
     Roads.build();
     Controller.vis();

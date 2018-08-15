@@ -2,10 +2,6 @@ import { CreepUtils } from "utils/CreepUtils";
 
 export class Builder {
   public static run(creep: Creep) {
-    if (creep.memory.room && creep.memory.room != creep.room.name) {
-      CreepUtils.moveRoom(creep);
-      return;
-    }
     CreepUtils.setWorking(creep);
     if (creep.memory.working) {
       var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES, {
@@ -22,6 +18,12 @@ export class Builder {
         }
       }
     } else {
+      if (creep.memory.room && creep.memory.room != creep.room.name) {
+        creep.say(creep.memory.room);
+        console.log("Moving back to ", creep.memory.room);
+        CreepUtils.moveRoom(creep);
+        return;
+      }
       CreepUtils.withdraw(creep);
     }
   }
@@ -65,7 +67,6 @@ export class Builder {
   }
 
   public static spawn(roomName: string) {
-    console.log("Spawning a builder for room", roomName);
     let room = Game.rooms[roomName];
     if (room.find(FIND_MY_SPAWNS).length == 0) {
       room = Game.spawns[Object.keys(Game.spawns)[0]].room;

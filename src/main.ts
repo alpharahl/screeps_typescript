@@ -7,9 +7,23 @@ import { MemoryHandler } from "memory/MemoryHandler";
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 export const loop = ErrorMapper.wrapLoop(() => {
   console.log(`Current game tick is ${Game.time}`);
-  MemoryHandler.run();
-  BuildingHandler.run();
-  CreepHandler.run();
+  try {
+    MemoryHandler.run();
+  } catch (e) {
+    console.log("Memory failed with:", e);
+  }
+
+  try {
+    BuildingHandler.run();
+  } catch (e) {
+    console.log("Building failed with:", e);
+  }
+
+  try {
+    CreepHandler.run();
+  } catch (e) {
+    console.log("Creep failed with:", e);
+  }
   // Automatically delete memory of missing creeps
   for (const name in Memory.creeps) {
     if (!(name in Game.creeps)) {

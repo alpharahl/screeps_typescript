@@ -23,8 +23,8 @@ export class Spawner {
           room.memory.lastSpawn = Game.time;
           Memory.harvesters[spawnObj.roleMem.source] = "Harvester-" + Game.time;
           return true;
-        } else if (room.energyAvailable >= 300) {
-          while (result != OK && room.memory.lastSpawn < Game.time - 200) {
+        } else if (spawn.room.energyAvailable >= 300) {
+          while (result != OK && spawn.room.memory.lastSpawn < Game.time - 200) {
             body.splice(body.length - 1, 1);
             result = spawn.spawnCreep(body, spawnObj.type + "-" + Game.time, { memory: memory });
           }
@@ -82,7 +82,7 @@ export class Spawner {
           room.memory.builders.splice(index, 1);
           room.memory.builders.push(name);
           return true;
-        } else if (room.memory.lastSpawn < Game.time - 200) {
+        } else if (room && room.memory && room.memory.lastSpawn < Game.time - 200) {
           let index = room.memory.builders.indexOf("spawning");
           room.memory.builders.splice(index, 1);
           room.memory.builders.push(name);
