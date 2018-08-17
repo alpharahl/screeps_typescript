@@ -28,12 +28,12 @@ export class Upgrader {
 
   public static getBody(spawnRoom: Room) {
     var energyAvailable = spawnRoom.energyAvailable;
-    var ratio = [MOVE, WORK, CARRY];
-    var ratioCost = CreepUtils.getBodyCost(ratio);
-    var loops = Math.floor(energyAvailable / ratioCost);
-    var body = <Array<BodyPartConstant>>[];
+    var body = <Array<BodyPartConstant>>[MOVE, MOVE, CARRY];
+    var maxWorks = 8;
+    var numWorks = Math.floor((energyAvailable - CreepUtils.getBodyCost(body)) / 100);
+    var loops = Math.min(maxWorks, numWorks);
     for (var i = 0; i < loops; i++) {
-      body = body.concat(ratio);
+      body = body.concat([WORK]);
     }
     return body;
   }

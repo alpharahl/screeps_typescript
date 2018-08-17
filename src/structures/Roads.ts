@@ -79,6 +79,7 @@ export class Roads {
     for (let name in Game.rooms) {
       var room = Game.rooms[name];
       if (RoomUtils.OwnedByMe(room)) {
+        Roads.init(room);
         if (room.find(FIND_MY_SPAWNS).length > 0) {
           if (room.find(FIND_CONSTRUCTION_SITES).length < 10) {
             let pos = PositionUtils.getPosFromMem(room.memory.roads.shift());

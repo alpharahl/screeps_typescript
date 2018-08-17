@@ -4,11 +4,9 @@ export class BuilderMemory {
   public static init() {
     for (let n in Game.rooms) {
       let room = Game.rooms[n];
-      if (room.find(FIND_CONSTRUCTION_SITES).length > 0) {
-        if (room.memory.builders == null) {
-          console.log("Resetting builders for", room.name);
-          room.memory.builders = [];
-        }
+      if (room.memory.builders == null) {
+        console.log("Resetting builders for", room.name);
+        room.memory.builders = [];
       }
     }
   }
@@ -40,7 +38,7 @@ export class BuilderMemory {
             i.structureType == STRUCTURE_RAMPART
         }).length;
         if (roadBuilders > 0) {
-          roadBuilders = 1;
+          roadBuilders = 2;
         }
         let noSpawnBuilder = 0;
         if (room.find(FIND_MY_SPAWNS).length == 0 && room.find(FIND_CONSTRUCTION_SITES).length > 0) {

@@ -10,11 +10,6 @@ export class Sources {
     }
     if (!room.memory.harvesters) {
       room.memory.harvesters = {};
-    }
-    if (room.controller!.owner) {
-      if (!room.memory.localHaulers) {
-        room.memory.localHaulers = {};
-      }
     } else {
       if (!room.memory.remoteHaulers) {
         room.memory.remoteHaulers = {};

@@ -6,11 +6,12 @@ import { Upgrader } from "./Upgrader";
 import { Reserver } from "./Reserver";
 import { RemoteHauler } from "./RemoteHauler";
 import { Claimer } from "./Claimer";
+import { LocalHauler } from "./LocalHauler";
 
 export class CreepSpawner {
   public static run() {
     // Run for each room I can see
-    if (Game.time % 2 == 0) {
+    if (Game.time % 25 == 0) {
       for (var name in Game.rooms) {
         let room = Game.rooms[name];
         let spawned = false;
@@ -25,8 +26,9 @@ export class CreepSpawner {
             case "SpawnHauler":
               spawned = SpawnHauler.spawn(room);
               break;
-            // case "LocalHauler":
-            //   break;
+            case "LocalHauler":
+              spawned = LocalHauler.spawn(room);
+              break;
             case "Builder":
               spawned = Builder.spawn(room);
               break;

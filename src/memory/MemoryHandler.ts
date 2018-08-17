@@ -5,10 +5,11 @@ import { Rooms } from "./Rooms";
 import { SpawnHaulerMemory } from "./SpawnHaulerMemory";
 import { UpgraderMemory } from "./UpgraderMemory";
 import { BuilderMemory } from "./BuilderMemory";
-import { HaulerMemory } from "./HaulerMemory";
+import { LocalHaulerMemory } from "./LocalHaulerMemory";
 
 export class MemoryHandler {
   public static run() {
+    Sources.run();
     HarvesterMemory.init();
     SpawnList.init();
     SpawnHaulerMemory.init();
@@ -18,7 +19,6 @@ export class MemoryHandler {
       Memory.allies = [];
     }
 
-    Sources.run();
     HarvesterMemory.run();
     SpawnList.run();
     Rooms.claims();
@@ -26,6 +26,6 @@ export class MemoryHandler {
     SpawnHaulerMemory.run();
     UpgraderMemory.run();
     BuilderMemory.run();
-    HaulerMemory.run();
+    LocalHaulerMemory.run();
   }
 }

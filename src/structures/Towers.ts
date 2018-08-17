@@ -58,7 +58,7 @@ export class Towers {
                 return 0;
               }
             );
-            if (repairTargets.length > 0 && tower.energy > 400) {
+            if (repairTargets.length > 0 && tower.energy > 300) {
               tower.repair(sortedTargets[0]);
             }
           }

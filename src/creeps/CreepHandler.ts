@@ -6,15 +6,12 @@ import { Claimer } from "./Claimer";
 import { RemoteHauler } from "./RemoteHauler";
 import { Reserver } from "./Reserver";
 import { CreepSpawner } from "./CreepSpawner";
+import { LocalHauler } from "./LocalHauler";
 
 export class CreepHandler {
   public static run() {
     // spawn creeps
-    try {
-      CreepSpawner.run();
-    } catch (e) {
-      console.log("Err: Failed to spawn:", e);
-    }
+    CreepSpawner.run();
 
     for (let name in Game.creeps) {
       let creep = Game.creeps[name];
@@ -39,6 +36,9 @@ export class CreepHandler {
           break;
         case "Reserver":
           Reserver.run(creep);
+          break;
+        case "LocalHauler":
+          LocalHauler.run(creep);
           break;
       }
     }

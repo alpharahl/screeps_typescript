@@ -7,15 +7,5 @@ export class HarvesterMemory {
     }
   }
 
-  public static run() {
-    for (let sourceId of Memory.sources) {
-      if (Memory.harvesters[sourceId] != "spawning") {
-        if (!Game.creeps[Memory.harvesters[sourceId]]) {
-          Memory.harvesters[sourceId] = "spawning";
-        }
-      } else if (Game.time % 250 == 0) {
-        Memory.harvesters[sourceId] = null;
-      }
-    }
-  }
+  public static run() {}
 }

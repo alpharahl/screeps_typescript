@@ -66,8 +66,12 @@ export class Storages {
   private static build(room: Room, step: number, containerTarget: RoomPosition, direction: RoomPosition) {
     let firstStep = room.findPath(containerTarget, direction, { ignoreCreeps: true })[step];
     if (!firstStep) {
-      console.log("Tried to build a container in room", room, "but failed");
-      return;
+      console.log("Failed to find spot between two items, comparing to source instead of whatever I was handed");
+      firstStep = room.findPath(containerTarget, room.find(FIND_SOURCES)[0].pos, { ignoreCreeps: true })[step];
+      if (!firstStep) {
+        console.log("Giving up, no container placed");
+        return;
+      }
     }
     new RoomPosition(firstStep.x, firstStep.y, room.name).createConstructionSite(STRUCTURE_CONTAINER);
   }
