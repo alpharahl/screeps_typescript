@@ -36,9 +36,9 @@ export class LocalHauler {
         }
       } else {
         var pickups = [];
-        var containers = [];
+        var containers = <Array<StructureContainer>>[];
         for (var source of creep.room.find(FIND_SOURCES)) {
-          let container = source.pos.findInRange(FIND_STRUCTURES, 1, {
+          let container = <Array<StructureContainer>>source.pos.findInRange(FIND_STRUCTURES, 1, {
             filter: { structureType: STRUCTURE_CONTAINER }
           });
           if (container.length > 0) {
@@ -51,6 +51,20 @@ export class LocalHauler {
             pickups.push(dropped[0]);
           }
         }
+        pickups = pickups.sort(
+          (leftSide, rightSide): number => {
+            if (leftSide.amount < rightSide.amount) return 1;
+            if (leftSide.amount > rightSide.amount) return -1;
+            return 0;
+          }
+        );
+        containers = containers.sort(
+          (leftSide, rightSide): number => {
+            if (leftSide.store[RESOURCE_ENERGY] < rightSide.store[RESOURCE_ENERGY]) return 1;
+            if (leftSide.store[RESOURCE_ENERGY] > rightSide.store[RESOURCE_ENERGY]) return -1;
+            return 0;
+          }
+        );
         if (pickups.length > 0) {
           creep.memory.roleMem.pickup = pickups[0].id;
         } else if (containers.length > 0) {
