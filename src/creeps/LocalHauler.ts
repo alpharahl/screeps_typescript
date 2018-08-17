@@ -27,11 +27,15 @@ export class LocalHauler {
     } else {
       if (creep.memory.roleMem.pickup) {
         var pickup = <any>Game.getObjectById(creep.memory.roleMem.pickup);
-        if (!pickup) {
+        console.log(pickup);
+        if ((pickup.amount && pickup.amount == 0) || (pickup.store && pickup.store[RESOURCE_ENERGY] == 0)) {
+          console.log(JSON.stringify(pickup));
           creep.memory.roleMem.pickup = null;
           return;
         }
         if (creep.pickup(pickup) == ERR_NOT_IN_RANGE) {
+          creep.moveTo(pickup);
+        } else if (creep.withdraw(pickup, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
           creep.moveTo(pickup);
         }
       } else {

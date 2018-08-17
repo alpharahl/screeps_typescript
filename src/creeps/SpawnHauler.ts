@@ -16,7 +16,7 @@ export class SpawnHauler {
     if (creep.memory.working) {
       CreepUtils.fillSpawn(creep);
     } else {
-      CreepUtils.pickup(creep);
+      CreepUtils.withdraw(creep);
     }
   }
 
