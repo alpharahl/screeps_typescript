@@ -18,23 +18,5 @@ export class Rooms {
     }
   }
 
-  public static reserves() {
-    if (!Memory.reserves) {
-      Memory.reserves = {};
-    }
-
-    for (var room in Memory.reserves) {
-      let reserveStatus = Memory.reserves[room];
-      if (!reserveStatus || reserveStatus == "replace") {
-        Reserver.spawn(room);
-        Memory.reserves[room] = "spawning";
-      } else if (reserveStatus != "spawning") {
-        let creep = Game.creeps[Memory.reserves[room]];
-        if (!creep) {
-          Reserver.spawn(room);
-          Memory.reserves[room] = "spawning";
-        }
-      }
-    }
-  }
+  public static reserves() {}
 }

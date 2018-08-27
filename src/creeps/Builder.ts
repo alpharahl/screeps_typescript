@@ -88,7 +88,7 @@ export class Builder {
     var ratioCost = CreepUtils.getBodyCost(ratio);
     var loops = Math.floor(energyAvailable / ratioCost);
     var body = <Array<BodyPartConstant>>[];
-    for (var i = 0; i < loops; i++) {
+    for (var i = 0; i < Math.min(loops, 5); i++) {
       body = body.concat(ratio);
     }
     return body;

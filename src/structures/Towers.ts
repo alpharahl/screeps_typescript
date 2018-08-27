@@ -14,15 +14,15 @@ export class Towers {
         towerCount += room.find(FIND_CONSTRUCTION_SITES, {
           filter: s => s.structureType == STRUCTURE_TOWER
         }).length;
-        while (towerCount < towerNumPossible) {
-          let spawn = room.find(FIND_MY_SPAWNS)[0];
-          let path = room.findPath(spawn.pos, controller.pos, { ignoreCreeps: true });
+        // while (towerCount < towerNumPossible) {
+        //   let spawn = room.find(FIND_MY_SPAWNS)[0];
+        //   let path = room.findPath(spawn.pos, controller.pos, { ignoreCreeps: true });
 
-          let middleStep = path[Math.floor(path.length / 2) + towerCount];
-          let pos = new RoomPosition(middleStep.x, middleStep.y, room.name);
-          pos.createConstructionSite(STRUCTURE_TOWER);
-          towerCount++;
-        }
+        //   let middleStep = path[Math.floor(path.length / 2) + towerCount];
+        //   let pos = new RoomPosition(middleStep.x, middleStep.y, room.name);
+        //   pos.createConstructionSite(STRUCTURE_TOWER);
+        //   towerCount++;
+        // }
       }
     }
   }
@@ -49,7 +49,7 @@ export class Towers {
                   struct.structureType != STRUCTURE_RAMPART &&
                   struct.hits < struct.hitsMax) ||
                 ((struct.structureType == STRUCTURE_WALL || struct.structureType == STRUCTURE_RAMPART) &&
-                  struct.hits < 25000 * level)
+                  struct.hits < Math.min(100000, 25000 * level))
             });
             let sortedTargets = repairTargets.sort(
               (leftSide, rightSide): number => {

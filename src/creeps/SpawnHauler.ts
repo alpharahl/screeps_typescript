@@ -21,6 +21,10 @@ export class SpawnHauler {
   }
 
   public static spawn(room: Room) {
+    if (!room.memory.spawnHaulers) {
+      // reserved room
+      return false;
+    }
     if (room.memory.spawnHaulers.length < 2) {
       return SpawnHauler.createCreep(room);
     }

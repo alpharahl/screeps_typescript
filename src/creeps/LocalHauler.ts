@@ -14,6 +14,7 @@ export class LocalHauler {
 
     CreepUtils.setWorking(creep);
     if (creep.memory.working) {
+      creep.memory.roleMem.pickup = null;
       var storage = creep.room.storage;
       if (!storage) {
         let containers = creep.room.controller!.pos.findInRange(FIND_STRUCTURES, 6, {
@@ -27,9 +28,7 @@ export class LocalHauler {
     } else {
       if (creep.memory.roleMem.pickup) {
         var pickup = <any>Game.getObjectById(creep.memory.roleMem.pickup);
-        console.log(pickup);
-        if ((pickup.amount && pickup.amount == 0) || (pickup.store && pickup.store[RESOURCE_ENERGY] == 0)) {
-          console.log(JSON.stringify(pickup));
+        if (!pickup || (pickup.amount && pickup.amount == 0) || (pickup.store && pickup.store[RESOURCE_ENERGY] == 0)) {
           creep.memory.roleMem.pickup = null;
           return;
         }
@@ -85,6 +84,10 @@ export class LocalHauler {
   }
 
   public static spawn(room: Room) {
+    if (!room.memory.localHaulers) {
+      // we don't own this room
+      return false;
+    }
     if (room.memory.localHaulers.length < 2) {
       var container = room.controller!.pos.findInRange(FIND_STRUCTURES, 6, {
         filter: { structureType: STRUCTURE_CONTAINER }
@@ -103,7 +106,7 @@ export class LocalHauler {
   }
 
   public static getBody(spawnRoom: Room) {
-    var maxCarry = 1500;
+    var maxCarry = 500;
     var energyAvailable = spawnRoom.energyAvailable;
     var numCarries = Math.floor(energyAvailable / 100);
     numCarries = Math.min(numCarries, maxCarry / 50);

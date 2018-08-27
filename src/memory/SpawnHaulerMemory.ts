@@ -16,8 +16,12 @@ export class SpawnHaulerMemory {
   public static run() {
     for (let n in Game.rooms) {
       var room = Game.rooms[n];
-      if (!room.memory.spawnHaulers) {
+      if (!room.memory.spawnHaulers && room.controller && room.controller.owner) {
         room.memory.spawnHaulers = [];
+      }
+      if (!room.memory.spawnHaulers) {
+        // don't own this room
+        continue;
       }
       for (var name of room.memory.spawnHaulers) {
         if (name == "spawning") {

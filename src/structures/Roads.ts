@@ -9,8 +9,11 @@ export class Roads {
   }
 
   public static run() {
-    Roads.connectionRoads();
-    Roads.extensionRoads();
+    if (Game.time % 2 == 0) {
+      Roads.connectionRoads();
+    } else {
+      Roads.extensionRoads();
+    }
   }
 
   public static extensionRoads() {

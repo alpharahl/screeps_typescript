@@ -42,7 +42,7 @@ interface RoomMemory {
   harvesters: any;
   localHaulers: any;
   remoteHaulers: any;
-  ignoreMe: any;
+  reserved: any;
 }
 
 // `global` extension samples

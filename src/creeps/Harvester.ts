@@ -42,6 +42,10 @@ export class Harvester {
   }
 
   public static spawn(room: Room) {
+    if (!room.memory.sources) {
+      // DONT own this room yet
+      return false;
+    }
     for (var sourceId of room.memory.sources) {
       if (!room.memory.harvesters[sourceId]) {
         return Harvester.createCreep(room, sourceId);

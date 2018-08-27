@@ -1,7 +1,7 @@
 export const CREEP_PRIORITY: string[] = [
   "Harvester",
-  "LocalHauler",
   "SpawnHauler",
+  "LocalHauler",
   "Builder",
   "Upgrader",
   "Reserver",

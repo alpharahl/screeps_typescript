@@ -57,6 +57,7 @@ export class CreepUtils {
       }
     }
     var targetContainer = <StructureContainer>creep.pos.findClosestByPath(miningContainers);
+
     if (creep.withdraw(targetContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
       creep.moveTo(targetContainer);
     }
@@ -71,6 +72,8 @@ export class CreepUtils {
       var target = <any>creep.pos.findClosestByPath(structures);
       if (creep.withdraw(target, resource) == ERR_NOT_IN_RANGE) {
         creep.moveTo(target);
+      } else if (target) {
+        creep.memory.roleMem.storage = target.id;
       }
     } else {
       CreepUtils.pickup(creep);
@@ -131,12 +134,6 @@ export class CreepUtils {
           creep.moveTo(tower);
         }
         return true;
-      }
-      var controllerStorage = Storages.getControllerStorage(creep.room);
-      if (controllerStorage) {
-        if (creep.transfer(controllerStorage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-          creep.moveTo(controllerStorage);
-        }
       }
       return true;
     }

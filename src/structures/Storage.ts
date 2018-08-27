@@ -56,11 +56,15 @@ export class Storages {
         if (controller.level >= 4 && !room.storage) {
           var spawn = room.find(FIND_MY_SPAWNS)[0];
           let pos = room.findPath(controller.pos, spawn.pos, { ignoreCreeps: true })[3];
+          if (!pos) {
+            return "ERR: Unable to place spawn";
+          }
           let position = new RoomPosition(pos.x, pos.y, room.name);
           position.createConstructionSite(STRUCTURE_STORAGE);
         }
       }
     }
+    return;
   }
 
   private static build(room: Room, step: number, containerTarget: RoomPosition, direction: RoomPosition) {

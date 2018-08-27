@@ -35,10 +35,12 @@ export class CreepSpawner {
             case "Upgrader":
               spawned = Upgrader.spawn(room);
               break;
-            // case "Reserver":
-            //   break;
-            // case "RemoteHauler":
-            //   break;
+            case "Reserver":
+              spawned = Reserver.spawn(room);
+              break;
+            case "RemoteHauler":
+              spawned = RemoteHauler.spawn(room);
+              break;
             // case "Claimer":
             //   break;
           }

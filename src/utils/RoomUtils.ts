@@ -27,9 +27,17 @@ export class RoomUtils {
   }
 
   public static findBestSpawn(room: Room) {
-    var spawn = Game.spawns[0];
+    var spawn = Game.spawns[Object.keys(Game.spawns)[0]];
     if (room.find(FIND_MY_SPAWNS).length > 0) {
       spawn = room.find(FIND_MY_SPAWNS)[0];
+    } else {
+      for (var name in Game.rooms) {
+        var potentialRoom = Game.rooms[name];
+
+        if (potentialRoom.memory.reserved && potentialRoom.memory.reserved[room.name]) {
+          spawn = potentialRoom.find(FIND_MY_SPAWNS)[0];
+        }
+      }
     }
     return spawn;
   }

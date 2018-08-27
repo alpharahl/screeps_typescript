@@ -13,6 +13,12 @@ export class Upgrader {
     }
     CreepUtils.setWorking(creep);
     if (creep.memory.working) {
+      if (creep.memory.roleMem.storage) {
+        var storage = <Structure>Game.getObjectById(creep.memory.roleMem.storage);
+        if (storage) {
+          creep.withdraw(storage, RESOURCE_ENERGY, 15);
+        }
+      }
       CreepUtils.upgrade(creep);
     } else {
       CreepUtils.withdraw(creep);
@@ -20,7 +26,7 @@ export class Upgrader {
   }
 
   public static spawn(room: Room) {
-    if (room.memory.upgraders.length < 2) {
+    if (room.memory.upgraders.length < 2 && room.controller && room.controller.owner && room.controller.owner.username == 'alpha-rahl') {
       return Upgrader.createCreep(room);
     }
     return false;
@@ -29,7 +35,7 @@ export class Upgrader {
   public static getBody(spawnRoom: Room) {
     var energyAvailable = spawnRoom.energyAvailable;
     var body = <Array<BodyPartConstant>>[MOVE, MOVE, CARRY];
-    var maxWorks = 8;
+    var maxWorks = 15;
     var numWorks = Math.floor((energyAvailable - CreepUtils.getBodyCost(body)) / 100);
     var loops = Math.min(maxWorks, numWorks);
     for (var i = 0; i < loops; i++) {

@@ -6,6 +6,8 @@ import { SpawnHaulerMemory } from "./SpawnHaulerMemory";
 import { UpgraderMemory } from "./UpgraderMemory";
 import { BuilderMemory } from "./BuilderMemory";
 import { LocalHaulerMemory } from "./LocalHaulerMemory";
+import { Reserve } from "./Reserve";
+import { CleanUp } from "./CleanUp";
 
 export class MemoryHandler {
   public static run() {
@@ -15,6 +17,7 @@ export class MemoryHandler {
     SpawnHaulerMemory.init();
     UpgraderMemory.init();
     BuilderMemory.init();
+    CleanUp.run();
     if (!Memory.allies) {
       Memory.allies = [];
     }
@@ -27,5 +30,6 @@ export class MemoryHandler {
     UpgraderMemory.run();
     BuilderMemory.run();
     LocalHaulerMemory.run();
+    Reserve.run();
   }
 }
