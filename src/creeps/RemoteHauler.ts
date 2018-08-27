@@ -7,6 +7,8 @@ export class RemoteHauler {
     if (!creep.ticksToLive) {
       Game.rooms[creep.memory.room].memory.remoteHaulers[creep.memory.roleMem.source] = creep.name;
       return;
+    } else if(creep.ticksToLive == 750){
+      Game.rooms[creep.memory.room].memory.remoteHaulers[creep.memory.roleMem.source] = 'replace'
     }
     CreepUtils.setWorking(creep);
     if (creep.memory.working) {
