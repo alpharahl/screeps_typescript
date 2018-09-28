@@ -5,7 +5,9 @@ import { RoomUtils } from "utils/RoomUtils";
 export class RemoteHauler {
   public static run(creep: Creep) {
     if (!creep.ticksToLive) {
-      Game.rooms[creep.memory.room].memory.remoteHaulers[creep.memory.roleMem.source] = creep.name;
+      if (Game.rooms[creep.memory.room]) {
+        Game.rooms[creep.memory.room].memory.remoteHaulers[creep.memory.roleMem.source] = creep.name;
+      }
       return;
     }
     CreepUtils.setWorking(creep);
