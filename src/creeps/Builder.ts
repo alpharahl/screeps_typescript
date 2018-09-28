@@ -4,7 +4,7 @@ import { RoomUtils } from "utils/RoomUtils";
 export class Builder {
   public static run(creep: Creep) {
     if (!creep.ticksToLive) {
-      var room = creep.room;
+      var room = Game.rooms[creep.memory.room];
       if (room.memory.builders.indexOf(creep.name) == -1) {
         var indSpawning = room.memory.builders.indexOf("spawning");
         room.memory.builders.splice(indSpawning, 1);
@@ -76,6 +76,9 @@ export class Builder {
   }
 
   public static spawn(room: Room) {
+    if (!room.controller) {
+      return false;
+    }
     if (room.memory.builders.length < room.memory.builderCount) {
       return Builder.createCreep(room);
     }

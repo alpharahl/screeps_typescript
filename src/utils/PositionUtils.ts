@@ -32,4 +32,20 @@ export class PositionUtils {
     }
     return new RoomPosition(pos.x + newPos[0], pos.y + newPos[1], pos.roomName);
   }
+
+  public static getNextTo(
+    pos: RoomPosition,
+    structureType: StructureConstant,
+    construction: boolean = false,
+    range: number = 1
+  ) {
+    let find = <FindConstant>FIND_STRUCTURES;
+    if (construction) {
+      find = FIND_CONSTRUCTION_SITES;
+    }
+    // pos = position to search next to
+    return <Array<Structure>>pos.findInRange(find, range, {
+      filter: (struct: Structure) => struct.structureType == structureType
+    });
+  }
 }

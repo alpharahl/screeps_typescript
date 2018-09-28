@@ -7,19 +7,31 @@ export class RemoteHauler {
     if (!creep.ticksToLive) {
       Game.rooms[creep.memory.room].memory.remoteHaulers[creep.memory.roleMem.source] = creep.name;
       return;
-    } else if(creep.ticksToLive == 750){
-      Game.rooms[creep.memory.room].memory.remoteHaulers[creep.memory.roleMem.source] = 'replace'
     }
     CreepUtils.setWorking(creep);
     if (creep.memory.working) {
-      var roads = creep.pos.findInRange(FIND_STRUCTURES, 1, {
-        filter: (road: StructureRoad) => {
-          (road.structureType == STRUCTURE_ROAD || road.structureType == STRUCTURE_CONTAINER) &&
-            road.hits < road.hitsMax;
+      var site = creep.pos.lookFor("constructionSite");
+      if (site.length > 0) {
+        creep.build(site[0]);
+      } else {
+        if (Object.keys(Game.constructionSites).length < 50) {
+          console.log(
+            "trying to make site in",
+            creep.room.name,
+            "with",
+            creep.pos.createConstructionSite(STRUCTURE_ROAD)
+          );
         }
-      });
-      if (roads.length > 0) {
-        creep.repair(roads[0]);
+      }
+      var road = creep.pos.lookFor("structure");
+      if (road.length > 0) {
+        for (var s of road) {
+          if (s.structureType == STRUCTURE_ROAD) {
+            if (s.hits < s.hitsMax) {
+              creep.repair(s);
+            }
+          }
+        }
       }
       if (creep.room.name == creep.memory.roleMem.spawnRoom) {
         CreepUtils.deposit(creep);
@@ -54,7 +66,7 @@ export class RemoteHauler {
   }
 
   public static createCreep(room: Room, sourceId: string) {
-    let ratio = [MOVE, CARRY];
+    let ratio = [MOVE, CARRY, CARRY];
     let spawn = RoomUtils.findBestSpawn(room);
     let roomEnergy = spawn.room.energyAvailable;
     let ratioCost = CreepUtils.getBodyCost(ratio);

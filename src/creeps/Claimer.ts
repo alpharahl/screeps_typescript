@@ -3,15 +3,27 @@ import { RoomUtils } from "utils/RoomUtils";
 import { Builder } from "./Builder";
 
 export class Claimer {
-  public static spawn(room: string) {
-    let spawn = Game.spawns[0];
-    Memory.spawnList.push({
-      type: "Claimer",
-      room: room,
-      roleMem: {},
-      body: [MOVE, MOVE, CLAIM, WORK]
-    });
+  public static spawn() {
+    for (var name in Memory.claims) {
+      if (Memory.claims[name] == true) {
+        let spawn = Game.spawns[Object.keys(Game.spawns)[1]];
+        var result = spawn.spawnCreep([MOVE, MOVE, CLAIM, WORK], "Claimer-" + name + "-" + spawn.name, {
+          memory: {
+            type: "Claimer",
+            room: name,
+            roleMem: {},
+            working: false
+          }
+        });
+        if (result == OK) {
+          Memory.claims[name] = "spawning";
+          return true;
+        }
+      }
+    }
+    return false;
   }
+  //Game.spawns['Spawn4'].spawnCreep([MOVE,MOVE,CLAIM,WORK], "Claimer",{memory:{type:"Claimer",room:"W37N57"}})
 
   public static run(creep: Creep) {
     if (!creep.ticksToLive && Memory.claims[creep.memory.room] == "spawning") {

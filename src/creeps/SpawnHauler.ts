@@ -14,7 +14,18 @@ export class SpawnHauler {
 
     CreepUtils.setWorking(creep);
     if (creep.memory.working) {
-      CreepUtils.fillSpawn(creep);
+      if (creep.carry.energy == 0) {
+        var storage = <any>creep.pos.findClosestByPath(FIND_STRUCTURES, {
+          filter: i => i.structureType == STRUCTURE_CONTAINER || i.structureType == STRUCTURE_STORAGE
+        });
+        var type: ResourceConstant = <ResourceConstant>Object.keys(creep.carry)[1];
+        console.log(storage, type, creep.carry[type], creep.transfer(storage, type, creep.carry[type]));
+        if (creep.transfer(storage, type, creep.carry[type]) == ERR_NOT_IN_RANGE) {
+          creep.moveTo(storage);
+        }
+      } else {
+        CreepUtils.fillSpawn(creep);
+      }
     } else {
       CreepUtils.withdraw(creep);
     }
@@ -32,14 +43,15 @@ export class SpawnHauler {
   }
 
   public static getBody(spawnRoom: Room) {
-    var maxCarry = 400;
+    var maxCarry = 800;
     var energyAvailable = spawnRoom.energyAvailable;
-    var numCarries = Math.floor(energyAvailable / 100);
+    var numCarries = Math.floor(energyAvailable / 150);
     numCarries = Math.min(numCarries, maxCarry / 50);
     var moves = <Array<BodyPartConstant>>[];
     var carries = <Array<BodyPartConstant>>[];
     for (var i = 0; i < numCarries; i++) {
       moves = moves.concat([MOVE]);
+      carries = carries.concat([CARRY]);
       carries = carries.concat([CARRY]);
     }
     var body = moves.concat(carries);

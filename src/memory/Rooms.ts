@@ -9,12 +9,6 @@ export class Rooms {
 
     for (var room in Memory.claims) {
       let claimStatus = Memory.claims[room];
-      switch (Memory.claims[room]) {
-        case true:
-          Claimer.spawn(room);
-          Memory.claims[room] = "spawning";
-          break;
-      }
     }
   }
 

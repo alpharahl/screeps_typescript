@@ -51,21 +51,21 @@ export class CleanUp {
           }
         }
 
-        // if (room.memory.upgraders) {
-        //   console.log("Cleaning upgraders in", room.name);
-        //   while (room.memory.upgraders.indexOf("spawning") != -1) {
-        //     var ind = room.memory.upgraders.indexOf("spawning");
-        //     room.memory.upgraders.splice(ind, 1);
-        //   }
-        // }
+        if (room.memory.upgraders) {
+          console.log("Cleaning upgraders in", room.name);
+          while (room.memory.upgraders.indexOf("spawning") != -1) {
+            var ind = room.memory.upgraders.indexOf("spawning");
+            room.memory.upgraders.splice(ind, 1);
+          }
+        }
 
-        // if (room.memory.builders) {
-        //   console.log("Cleaning builders in", room.name);
-        //   while (room.memory.builders.indexOf("spawning") != -1) {
-        //     var ind = room.memory.builders.indexOf("spawning");
-        //     room.memory.builders.splice(ind, 1);
-        //   }
-        // }
+        if (room.memory.builders) {
+          console.log("Cleaning builders in", room.name);
+          while (room.memory.builders.indexOf("spawning") != -1) {
+            var ind = room.memory.builders.indexOf("spawning");
+            room.memory.builders.splice(ind, 1);
+          }
+        }
       }
     }
   }

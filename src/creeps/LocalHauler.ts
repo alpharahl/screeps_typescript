@@ -88,7 +88,14 @@ export class LocalHauler {
       // we don't own this room
       return false;
     }
-    if (room.memory.localHaulers.length < 2) {
+    var needed = 2;
+    var links = room.find(FIND_MY_STRUCTURES, {
+      filter: struct => struct.structureType == STRUCTURE_LINK
+    });
+    if (links.length > 1) {
+      needed = 0;
+    }
+    if (room.memory.localHaulers.length < needed) {
       var container = room.controller!.pos.findInRange(FIND_STRUCTURES, 6, {
         filter: { structureType: STRUCTURE_CONTAINER }
       });
@@ -106,14 +113,15 @@ export class LocalHauler {
   }
 
   public static getBody(spawnRoom: Room) {
-    var maxCarry = 500;
+    var maxCarry = 800;
     var energyAvailable = spawnRoom.energyAvailable;
-    var numCarries = Math.floor(energyAvailable / 100);
+    var numCarries = Math.floor(energyAvailable / 150);
     numCarries = Math.min(numCarries, maxCarry / 50);
     var moves = <Array<BodyPartConstant>>[];
     var carries = <Array<BodyPartConstant>>[];
     for (var i = 0; i < numCarries; i++) {
       moves = moves.concat([MOVE]);
+      carries = carries.concat([CARRY]);
       carries = carries.concat([CARRY]);
     }
     var body = moves.concat(carries);

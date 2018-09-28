@@ -7,11 +7,20 @@ import { RemoteHauler } from "./RemoteHauler";
 import { Reserver } from "./Reserver";
 import { CreepSpawner } from "./CreepSpawner";
 import { LocalHauler } from "./LocalHauler";
+import { Miner } from "./Miner";
+import { LinkMover } from "./LinkMover";
+import { Links } from "./Links";
+import { Dismantler } from "./Dismantler";
 
 export class CreepHandler {
   public static run() {
     // spawn creeps
     CreepSpawner.run();
+
+    for (var name in Game.rooms) {
+      var room = Game.rooms[name];
+      Links.run(room);
+    }
 
     for (let name in Game.creeps) {
       let creep = Game.creeps[name];
@@ -39,6 +48,15 @@ export class CreepHandler {
           break;
         case "LocalHauler":
           LocalHauler.run(creep);
+          break;
+        case "Miner":
+          Miner.run(creep);
+          break;
+        case "LinkMover":
+          LinkMover.run(creep);
+          break;
+        case "Dismantler":
+          Dismantler.run(creep);
           break;
       }
     }

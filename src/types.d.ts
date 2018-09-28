@@ -26,6 +26,7 @@ interface Memory {
   haulers: any;
   reserves: any;
   allies: Array<string>;
+  spawns: Array<string>;
 }
 
 interface RoomMemory {
@@ -43,6 +44,9 @@ interface RoomMemory {
   localHaulers: any;
   remoteHaulers: any;
   reserved: any;
+  mine: string;
+  miner: any;
+  links: any;
 }
 
 // `global` extension samples

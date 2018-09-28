@@ -65,9 +65,14 @@ export class CreepUtils {
 
   public static withdraw(creep: Creep, resource: ResourceConstant = RESOURCE_ENERGY) {
     var structures = creep.room.find(FIND_STRUCTURES, {
-      filter: i =>
-        (i.structureType == STRUCTURE_CONTAINER || i.structureType == STRUCTURE_STORAGE) && i.store[resource] != 0
-    })!;
+      filter: (i: any) =>
+        (i.structureType == STRUCTURE_CONTAINER || i.structureType == STRUCTURE_STORAGE) && i.store[resource] >= 1000
+    });
+    if (structures.length == 0) {
+      structures = creep.room.find(FIND_MY_STRUCTURES, {
+        filter: s => s.structureType == STRUCTURE_LINK && s.energy > 0
+      });
+    }
     if (structures.length > 0) {
       var target = <any>creep.pos.findClosestByPath(structures);
       if (creep.withdraw(target, resource) == ERR_NOT_IN_RANGE) {
@@ -82,10 +87,13 @@ export class CreepUtils {
 
   public static deposit(creep: Creep, resource: ResourceConstant = RESOURCE_ENERGY) {
     var structures = creep.room.find(FIND_STRUCTURES, {
-      filter: i =>
-        (i.structureType == STRUCTURE_CONTAINER || i.structureType == STRUCTURE_STORAGE) &&
-        i.store[resource]! < i.storeCapacity - creep.carry[resource]!
+      filter: i => i.structureType == STRUCTURE_LINK || i.structureType == STRUCTURE_STORAGE
     })!;
+    if (structures.length == 0) {
+      structures = creep.room.find(FIND_STRUCTURES, {
+        filter: i => i.structureType == STRUCTURE_CONTAINER
+      });
+    }
     if (structures.length > 0) {
       var target = <any>creep.pos.findClosestByPath(structures);
       if (creep.transfer(target, resource) == ERR_NOT_IN_RANGE) {
@@ -113,9 +121,9 @@ export class CreepUtils {
   }
 
   public static setWorking(creep: Creep) {
-    if (creep.carry.energy == creep.carryCapacity) {
+    if (_.sum(creep.carry) == creep.carryCapacity) {
       creep.memory.working = true;
-    } else if (creep.carry.energy == 0) {
+    } else if (_.sum(creep.carry) == 0) {
       creep.memory.working = false;
     }
   }

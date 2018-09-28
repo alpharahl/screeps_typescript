@@ -1,4 +1,5 @@
 import { RoomUtils } from "utils/RoomUtils";
+import { CreepUtils } from "utils/CreepUtils";
 
 export class Reserver {
   public static spawn(room: Room) {
@@ -31,6 +32,9 @@ export class Reserver {
 
     // 2 moves to deal with swamp
     var body = [MOVE, MOVE, CLAIM];
+    if (spawn.room.energyAvailable >= CreepUtils.getBodyCost([MOVE, MOVE, CLAIM, CLAIM])) {
+      body = [MOVE, MOVE, CLAIM, CLAIM];
+    }
     var memory = {
       type: "Reserver",
       room: targetRoom,

@@ -116,18 +116,18 @@ export class Roads {
         } else {
           room.memory.roads.push(rPos);
         }
-        if (!rPos || !pos.direction) {
-          continue;
-        }
-        var neighbor = PositionUtils.getNeighbor(rPos, pos.direction + 1);
-        if (!neighbor) {
-          continue;
-        }
-        if (neighbor.lookFor("terrain")[0] == "swamp") {
-          room.memory.roads.unshift(neighbor);
-        } else if (neighbor.lookFor("terrain")[0] != "wall") {
-          room.memory.roads.push(neighbor);
-        }
+        // if (!rPos || !pos.direction) {
+        //   continue;
+        // }
+        // var neighbor = PositionUtils.getNeighbor(rPos, pos.direction + 1);
+        // if (!neighbor) {
+        //   continue;
+        // }
+        // if (neighbor.lookFor("terrain")[0] == "swamp") {
+        //   room.memory.roads.unshift(neighbor);
+        // } else if (neighbor.lookFor("terrain")[0] != "wall") {
+        //   room.memory.roads.push(neighbor);
+        // }
       }
     }
   }
