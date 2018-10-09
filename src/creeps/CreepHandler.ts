@@ -11,6 +11,7 @@ import { Miner } from "./Miner";
 import { LinkMover } from "./LinkMover";
 import { Links } from "./Links";
 import { Dismantler } from "./Dismantler";
+import { TerminalHauler } from "./TerminalHauler";
 
 export class CreepHandler {
   public static run() {
@@ -57,6 +58,9 @@ export class CreepHandler {
           break;
         case "Dismantler":
           Dismantler.run(creep);
+          break;
+        case "TerminalHauler":
+          TerminalHauler.run(creep);
           break;
       }
     }

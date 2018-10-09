@@ -13,6 +13,15 @@ export class RoomUtils {
     return false;
   }
 
+  public static reservedByMe(room: Room) {
+    if (room.controller && room.controller.reservation) {
+      if (room.controller.reservation.username == "alpha-rahl") {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static ClearSites() {
     for (var name in Game.rooms) {
       var room = Game.rooms[name];
@@ -40,5 +49,21 @@ export class RoomUtils {
       }
     }
     return spawn;
+  }
+
+  public static defenseCheck() {
+    for (var name in Game.rooms) {
+      var room = Game.rooms[name];
+      if (this.reservedByMe(room)) {
+        var invaders = <Array<any>>room.find(FIND_HOSTILE_CREEPS, {
+          filter: creep => creep.owner.username == "Invader"
+        });
+        if (invaders.length > 0) {
+          room.memory.underAttack = true;
+        } else {
+          room.memory.underAttack = false;
+        }
+      }
+    }
   }
 }

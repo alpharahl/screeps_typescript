@@ -7,6 +7,7 @@ import { Defenses } from "./Defenses";
 import { RoomUtils } from "utils/RoomUtils";
 import { SpawnBuilder } from "./Spawn";
 import { LinksBuilder } from "./Links";
+import { Terminal } from "./Terminal";
 
 export class BuildingHandler {
   public static run() {
@@ -24,6 +25,7 @@ export class BuildingHandler {
     Towers.run();
     SpawnBuilder.run();
     LinksBuilder.run();
+    Terminal.run();
 
     RoomUtils.ClearSites();
   }

@@ -12,6 +12,12 @@ export class SpawnHauler {
       }
     }
 
+    if (creep.room.memory.terminalHauler == "true") {
+      creep.memory.type = "TerminalHauler";
+      creep.room.memory.terminalHauler = creep.id;
+      return;
+    }
+
     CreepUtils.setWorking(creep);
     if (creep.memory.working) {
       if (creep.carry.energy == 0) {
@@ -43,7 +49,7 @@ export class SpawnHauler {
   }
 
   public static getBody(spawnRoom: Room) {
-    var maxCarry = 800;
+    var maxCarry = 250;
     var energyAvailable = spawnRoom.energyAvailable;
     var numCarries = Math.floor(energyAvailable / 150);
     numCarries = Math.min(numCarries, maxCarry / 50);

@@ -47,6 +47,9 @@ interface RoomMemory {
   mine: string;
   miner: any;
   links: any;
+  underAttack: boolean;
+  defender: string;
+  terminalHauler: string;
 }
 
 // `global` extension samples

@@ -142,6 +142,16 @@ export class CreepUtils {
           creep.moveTo(tower);
         }
         return true;
+      } else {
+        var terminal = creep.room.terminal;
+        if (terminal) {
+          if (terminal.store[RESOURCE_ENERGY] < 50000) {
+            if (creep.transfer(terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+              creep.moveTo(terminal);
+            }
+            return true;
+          }
+        }
       }
       return true;
     }
@@ -155,6 +165,7 @@ export class CreepUtils {
         return true;
       }
     }
+
     return false;
   }
   public static upgrade(creep: Creep) {
