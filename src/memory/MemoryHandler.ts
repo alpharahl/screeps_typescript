@@ -12,20 +12,20 @@ export class MemoryHandler {
   public static run() {
     CleanUp.run();
     Sources.run();
-    SpawnHaulerMemory.init();
-    UpgraderMemory.init();
-    BuilderMemory.init();
-    if (!Memory.allies) {
-      Memory.allies = [];
-    }
-
-    MinerMemory.run();
-    Rooms.claims();
-    Rooms.reserves();
-    SpawnHaulerMemory.run();
-    UpgraderMemory.run();
-    BuilderMemory.run();
-    LocalHaulerMemory.run();
-    Reserve.run();
+    // SpawnHaulerMemory.init();
+    // UpgraderMemory.init();
+    // BuilderMemory.init();
+    // if (!Memory.allies) {
+    //   Memory.allies = [];
+    // }
+    //
+    // MinerMemory.run();
+    // Rooms.claims();
+    // Rooms.reserves();
+    // SpawnHaulerMemory.run();
+    // UpgraderMemory.run();
+    // BuilderMemory.run();
+    // LocalHaulerMemory.run();
+    // Reserve.run();
   }
 }

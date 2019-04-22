@@ -12,8 +12,8 @@ let debugStore: DebugStore;
 
 function InitializeDebugStore(): void {
   debugStore = {
-    usedCPU: 0,
-    priorCPU: 0
+    priorCPU: 0,
+    usedCPU: 0
   };
 }
 
@@ -31,10 +31,10 @@ export const loop = ErrorMapper.wrapLoop(() => {
   MemoryHandler.run();
   LogCPU("Memory Run");
 
-  BuildingHandler.run();
+  // BuildingHandler.run();
   LogCPU("Buildings Handled");
 
-  CreepHandler.run();
+  // CreepHandler.run();
   LogCPU("Creeps Handled");
   // Automatically delete memory of missing creeps
   for (const name in Memory.creeps) {

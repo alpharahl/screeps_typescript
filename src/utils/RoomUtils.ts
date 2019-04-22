@@ -1,13 +1,17 @@
+const spawnId =  Object.keys(Game.spawns)[0] as string;
+const me = Game.spawns[spawnId].owner.username
+
+
 export class RoomUtils {
   public static OwnedByMe(room: Room) {
     if (room.controller) {
       let controller = room.controller;
       if (controller.owner) {
         // Room is owned
-        return controller.owner.username == "alpha-rahl";
+        return controller.owner.username === me;
       } else if (controller.reservation) {
         // Room is reserved
-        return controller.reservation.username == "alpha-rahl";
+        return controller.reservation.username === me;
       }
     }
     return false;
@@ -15,7 +19,7 @@ export class RoomUtils {
 
   public static reservedByMe(room: Room) {
     if (room.controller && room.controller.reservation) {
-      if (room.controller.reservation.username == "alpha-rahl") {
+      if (room.controller.reservation.username === me) {
         return true;
       }
     }
