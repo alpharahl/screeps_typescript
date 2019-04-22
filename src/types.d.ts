@@ -50,7 +50,7 @@ interface RoomMemory {
   underAttack: boolean;
   defender: string;
   terminalHauler: string;
-  spawnQueue: any[];
+  spawnQueue: any;
 }
 
 // `global` extension samples
