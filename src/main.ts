@@ -1,6 +1,4 @@
 import { ErrorMapper } from "utils/ErrorMapper";
-import { CreepHandler } from "creeps/CreepHandler";
-import { BuildingHandler } from "structures/BuildingHandler";
 import { MemoryHandler } from "memory/MemoryHandler";
 
 interface DebugStore {
@@ -31,11 +29,6 @@ export const loop = ErrorMapper.wrapLoop(() => {
   MemoryHandler.run();
   LogCPU("Memory Run");
 
-  // BuildingHandler.run();
-  LogCPU("Buildings Handled");
-
-  // CreepHandler.run();
-  LogCPU("Creeps Handled");
   // Automatically delete memory of missing creeps
   for (const name in Memory.creeps) {
     if (!(name in Game.creeps)) {
