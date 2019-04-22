@@ -30,16 +30,16 @@ interface Memory {
 }
 
 interface RoomMemory {
-  spawnHaulers: Array<string>;
-  upgraders: Array<string>;
-  builders: Array<string>;
+  spawnHaulers: string[];
+  upgraders: string[];
+  builders: string[];
   builderCount: number;
-  roads: Array<RoomPosition>;
-  controllerHistory: Array<number>;
+  roads: RoomPosition[];
+  controllerHistory: number[];
   primaryStorage: string;
   lastSpawn: number;
   clearSites: boolean;
-  sources: Array<string>;
+  sources: string[];
   harvesters: any;
   localHaulers: any;
   remoteHaulers: any;
@@ -50,6 +50,7 @@ interface RoomMemory {
   underAttack: boolean;
   defender: string;
   terminalHauler: string;
+  spawnQueue: any[];
 }
 
 // `global` extension samples
